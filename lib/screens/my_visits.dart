@@ -1,109 +1,35 @@
-import 'package:ezyscripts/constant/colors.dart';
+import 'package:ezyscripts/screens/my_refill.dart';
 import 'package:flutter/material.dart';
 
-import 'my_prescription.dart';
-import 'my_visits.dart';
+import '../constant/colors.dart';
 
-class MyAppointment extends StatefulWidget {
-  const MyAppointment({Key? key});
+class MyVisit extends StatefulWidget {
+  const MyVisit({super.key});
 
   @override
-  State<MyAppointment> createState() => _MyAppointmentState();
+  State<MyVisit> createState() => _MyVisitState();
 }
 
-class _MyAppointmentState extends State<MyAppointment> {
+class _MyVisitState extends State<MyVisit> {
   String? selectedValue = '0';
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("My Appointment")),
+      appBar: AppBar(
+        title: const Text("My Visit"),
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                width: size.width,
-                height: size.height * 0.22,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey.shade300,
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      width: size.width,
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
-                        ),
-                        color: Color(0xFF1F2260),
-                      ),
-                      child: const Text(
-                        'Patient Details',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text('Reg. NO: '),
-                                  Text('784541'),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text('Mobile NO: '),
-                                  Text('998784541'),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Row(
-                            children: [
-                              Text('Patient Name: '),
-                              Text('Adit'),
-                            ],
-                          ),
-                          const Divider(
-                            color: Colors.black,
-                          ),
-                          Row(
-                            children: [
-                              Text('Email ID: '),
-                              Text('adi@gmail.com'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 15),
-              const Text('Search Appointment for: '),
+              const Text('Period '),
               const SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.only(left: 8),
+                padding: const EdgeInsets.only(left: 8, right: 8),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(25.0),
@@ -130,16 +56,13 @@ class _MyAppointmentState extends State<MyAppointment> {
                     });
                     print('Selected: $value');
                   },
-                  hint: const Text('Select an option'), // Optional hint text
+                  hint: const Text('Select Date'), // Optional hint text
                   isExpanded: true,
-
                 ),
               ),
               const SizedBox(height: 10),
-              const Text('Select Status: '),
-              const SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.only(left: 8),
+                padding: const EdgeInsets.only(left: 8, right: 8),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(25.0),
@@ -163,17 +86,23 @@ class _MyAppointmentState extends State<MyAppointment> {
                   onChanged: (String? value) {
                     print('Selected: $value');
                   },
-                  hint: const Text('Select an option'), // Optional hint text
+                  hint: const Text('Search by Doctor'), // Optional hint text
                   isExpanded: true,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const  MyVisit(),));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyRefill(),
+                          ));
                     },
                     child: Container(
                       width: size.width * 0.45,
@@ -220,7 +149,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Appointment List',
+                      'My Refill',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -228,7 +157,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                       ),
                     ),
                     Text(
-                      'Count 12',
+                      'Count 1',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -244,7 +173,8 @@ class _MyAppointmentState extends State<MyAppointment> {
                 width: size.width,
                 child: ListView.builder(
                   //physics: NeverScrollableScrollPhysics(),
-                  itemCount: 2, // Adjust the itemCount based on your actual data
+                  itemCount:
+                      2, // Adjust the itemCount based on your actual data
                   itemBuilder: (context, index) {
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -253,20 +183,52 @@ class _MyAppointmentState extends State<MyAppointment> {
                         border: Border.all(color: AppColors.primary),
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text('Date:\n04/12/2024'),
-                                Text('Shift:\nAfternoon'),
-                                Text('Time From: \nN/A'),
-                                Text('Time To: \nN/A'),
+                              children: [
+                                Text('Date-Time:\n04/12/2024'),
+                                Row(
+                                  children: [
+                                    Text('Status: '),
+                                    Text(
+                                      'Active',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.green),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          Container(
+                            width: size.width,
+                            color: AppColors.secondary.withOpacity(0.3),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 8,
+                            ),
+                            child: const Row(
+                              children: [
+                                Text(
+                                  'eRx Ref. No: Self-2015',
+                                  style: TextStyle(color: AppColors.primary),
+                                ),
+                                Text(
+                                  'Patient ID:2514',
+                                  style: TextStyle(color: AppColors.primary),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Drug: Sabadiu luia"),
+                          ),
                           Container(
                             width: size.width,
                             color: AppColors.secondary.withOpacity(0.3),
@@ -275,7 +237,7 @@ class _MyAppointmentState extends State<MyAppointment> {
                               horizontal: 8,
                             ),
                             child: const Text(
-                              'Consultant: Ranjan Doctor',
+                              'Consultant: Espir abnd ',
                               style: TextStyle(color: AppColors.primary),
                             ),
                           ),
@@ -284,40 +246,60 @@ class _MyAppointmentState extends State<MyAppointment> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children:  [
-                                const Text("Appt. For: Consultation"),
-                                const Text("Status: "),
+                              children: [
                                 Container(
+                                  width: 100,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.amber,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                                  child: const Text('Pending'),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children:  [
-                                Container(
-                                  width: 130,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.red,
-                                  ),
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: AppColors.primary,
+                                      )),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 8,
                                   ),
                                   child: const Center(
                                     child: Text(
-                                      'Cancel',
-                                      style: TextStyle(color: Colors.white),
+                                      'Share',
+                                      style:
+                                          TextStyle(color: AppColors.primary),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: AppColors.primary,
+                                      )),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 8,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'View',
+                                      style:
+                                          TextStyle(color: AppColors.primary),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: Colors.red,
+                                      )),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 8,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Edit',
+                                      style: TextStyle(color: Colors.red),
                                     ),
                                   ),
                                 ),
