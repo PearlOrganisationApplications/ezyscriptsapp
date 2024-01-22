@@ -1,4 +1,5 @@
 import 'package:ezyscripts/screens/login_screen.dart';
+import 'package:ezyscripts/screens/my_appointment.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      home: LoginScreen(),
+      home: MyAppointment(),
     );
   }
 }
