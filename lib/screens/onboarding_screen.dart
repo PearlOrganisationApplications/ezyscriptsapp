@@ -1,7 +1,6 @@
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/screens/login_screen.dart';
 import 'package:ezyscripts/screens/signup_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardScreen extends StatelessWidget {
