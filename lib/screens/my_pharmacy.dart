@@ -1,3 +1,4 @@
+import 'package:ezyscripts/screens/my%20doctor.dart';
 import 'package:flutter/material.dart';
 
 class Doctor {
@@ -7,16 +8,16 @@ class Doctor {
   Doctor({required this.name, required this.specialization});
 }
 
-class MyDoctorSearchList extends StatefulWidget {
+class MyPharmacy extends StatefulWidget {
   final List<Doctor> doctors;
 
-  const MyDoctorSearchList({Key? key, required this.doctors}) : super(key: key);
+  const MyPharmacy({Key? key, required this.doctors}) : super(key: key);
 
   @override
-  _MyDoctorSearchListState createState() => _MyDoctorSearchListState();
+  _MyPharmacyState createState() => _MyPharmacyState();
 }
 
-class _MyDoctorSearchListState extends State<MyDoctorSearchList> {
+class _MyPharmacyState extends State<MyPharmacy> {
   TextEditingController _searchController = TextEditingController();
   List<Doctor> filteredDoctors = [];
 
@@ -31,11 +32,58 @@ class _MyDoctorSearchListState extends State<MyDoctorSearchList> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Doctor Search List'),
+        title: Text('Pharmacy List'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              color: Colors.grey.shade300,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const  MyDoctorSearchList(doctors: []),));
+                    },
+                    child: Container(
+                      width: size.width * 0.48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1F2260),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: const Center(
+                        child: Text(
+                          'My Pharmacy',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const  MyPharmacy(doctors: []),));
+                    },
+                    child: Container(
+                      width: size.width * 0.48,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: const Center(
+                        child: Text(
+                          'Pending Acceptance',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Container(
@@ -61,7 +109,7 @@ class _MyDoctorSearchListState extends State<MyDoctorSearchList> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: 'Search by Doctor Name',
+                          hintText: 'Search by Pharmacy Name',
                           border: InputBorder.none,
                         ),
                       ),
@@ -84,14 +132,14 @@ class _MyDoctorSearchListState extends State<MyDoctorSearchList> {
             //   ),
             // ),
 
-            Center(child: Text("Empty Doctor List"),),
+            Center(child: Text("Empty Pharmacy  List"),),
             Center(
               child: Container(
                 height: size.height * 0.5,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                        "https://img.freepik.com/free-photo/clipboard-wireless-keyboard-cup-coffee-stethoscope-green-desk_23-2148213966.jpg?w=1380&t=st=1705922340~exp=1705922940~hmac=75579330cfbb594ffff9e932445a60ab27d086d1e5f5a849aed4c785ae01afaa"),
+                        "https://img.freepik.com/premium-vector/pharmacists_23-2148184173.jpg?w=826"),
                     fit: BoxFit.contain, // Adjust the fit as needed
                   ),
                 ),
@@ -150,7 +198,7 @@ class MyDoctorEntryScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyDoctorSearchList(doctors: doctors),
+                    builder: (context) => MyPharmacy(doctors: doctors),
                   ),
                 );
               },

@@ -1,4 +1,5 @@
 import 'package:ezyscripts/screens/my%20doctor.dart';
+import 'package:ezyscripts/screens/my_pharmacy.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
@@ -9,12 +10,7 @@ class MyDocument extends StatefulWidget {
   @override
   State<MyDocument> createState() => _MyDocumentState();
 }
-final List<Doctor> doctors = [
-  Doctor(name: 'Dr. John Doe', specialization: 'Cardiologist'),
-  Doctor(name: 'Dr. Jane Smith', specialization: 'Orthopedic Surgeon'),
-  Doctor(name: 'Dr. Alex Johnson', specialization: 'Pediatrician'),
-  // Add more doctors as needed
-];
+
 class _MyDocumentState extends State<MyDocument> {
   @override
   Widget build(BuildContext context) {
@@ -124,7 +120,9 @@ class _MyDocumentState extends State<MyDocument> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const  MyPharmacy(doctors: []),));
+                    },
                     child: Container(
                       width: size.width * 0.45,
                       decoration: BoxDecoration(
