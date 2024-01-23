@@ -21,8 +21,10 @@ class HomeScreen extends StatelessWidget {
                 color: Colors.white
             ),
           ),
+          leading: const Text(''),
+          leadingWidth: 0,
           actions: [
-            IconButton(onPressed: (){}, 
+            IconButton(onPressed: (){},
                 icon : const Icon(Icons.power_settings_new, color: Colors.white,))
           ],
         ),
@@ -49,20 +51,34 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                    Center(
-                     child: Image.asset('assets/images/logo.png',height: 80,),
+                     child: Image.asset('assets/images/logo.png',height: 70,),
                    ),
-                   const  Text('User Name,', style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500
-                    ),),
-                    const SizedBox(height: 6),
-                    const Text('Welcome to Ezyscript',
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                    ),
-                  const SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     children: [
+                     const   Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           Text('User Name,', style: TextStyle(
+                               color: AppColors.primary,
+                               fontSize: 16,
+                               fontWeight: FontWeight.w500
+                           ),),
+                          SizedBox(height: 6),
+                          Text('Welcome to Ezyscript',
+                             style: TextStyle(
+                               color: Colors.black,
+                             ),
+                           ),
+                         ],
+                       ),
+                       ClipRRect(child: Image.asset('assets/images/camera.png', height: 80, width: 80,
+                       fit: BoxFit.cover,
+                       ))
+                     ],
+                   ),
+
+                  const SizedBox(height: 10,),
                   const  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                      children: [
