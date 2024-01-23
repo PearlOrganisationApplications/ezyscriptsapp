@@ -6,7 +6,10 @@ class GenderDropDown extends StatefulWidget {
 }
 
 class _GenderDropDownState extends State<GenderDropDown> {
-  String? selectedOption;
+  String? _selectedOption;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +17,12 @@ class _GenderDropDownState extends State<GenderDropDown> {
       height: 40,
       color: Colors.grey,
       child: DropdownButtonFormField<String>(
-        value: selectedOption,
+        value: _selectedOption,
         onChanged: (String? newValue) {
           setState(() {
-            selectedOption = newValue;
+            _selectedOption = newValue;
+            print(newValue);
+
           });
         },
         items: const [
@@ -37,9 +42,10 @@ class _GenderDropDownState extends State<GenderDropDown> {
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.symmetric(horizontal: 12),
-          labelText: selectedOption,
+          labelText: _selectedOption,
         ),
       ),
     );
   }
+
 }
