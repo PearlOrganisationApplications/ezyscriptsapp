@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../constant/colors.dart';
+import 'Home Screen/home_screen.dart';
+import 'bottomscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -153,7 +155,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(AppColors.primary), // Replace 'Colors.blue' with your desired color
                     ),
-                    onPressed: (){}, child: const Text('Login',style: TextStyle(color: Colors.white),)))
+                    onPressed: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomBar()));
+
+                    }, child: const Text('Login',style: TextStyle(color: Colors.white),)))
           ],
 
         ),

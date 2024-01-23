@@ -4,6 +4,11 @@ import '../../constant/colors.dart';
 import '../About Us/about_us.dart';
 import '../Contact Us/contact_us.dart';
 import '../Profile Screen/profile_screen.dart';
+import '../my_appointment.dart';
+import '../my_document.dart';
+import '../my_pharmacy.dart';
+import '../my_prescription.dart';
+import '../my_refill.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -87,7 +92,7 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
-        bottomNavigationBar:  BottomBar(),
+
       ),
     );
   }
@@ -96,6 +101,15 @@ class HomeScreen extends StatelessWidget {
 
 //******* Grid View class *** //
 class GridItem extends StatelessWidget {
+  final  ScreenList=[
+    MyRefill(),
+    MyDocument(),
+    MyPrescription(),
+    MyPharmacy(doctors: [],),
+
+    MyAppointment()
+
+  ];
 
   final List<Map<String, String>> dataList = [
     {
@@ -131,30 +145,41 @@ class GridItem extends StatelessWidget {
         ),
         itemCount: dataList.length,
         itemBuilder: (context, index) {
-          return Container(
-            height: 80,
-            width: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Colors.grey.shade500,
-                width: 2.0,
+          var screens=ScreenList[index];
+          return InkWell(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => screens,
+                ),
+              );
+            },
+            child: Container(
+              height: 80,
+              width: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.grey.shade500,
+                  width: 2.0,
+                ),
               ),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(dataList[index]['icon']!, height: 60),
-                  const SizedBox(height: 6,),
-                  Text(
-                    dataList[index]['title']!,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ],
-              )
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(dataList[index]['icon']!, height: 60),
+                    const SizedBox(height: 6,),
+                    Text(
+                      dataList[index]['title']!,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ],
+                )
 
 
+              ),
             ),
           );
         },
@@ -166,65 +191,6 @@ class GridItem extends StatelessWidget {
 
 // ** Bottom Navigation Bar ***** //
 
-class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
 
-  @override
-  State<BottomBar> createState() => _BottomBarState();
-}
-
-class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens =   [
-    HomeScreen(),
-    AboutUs(),
-    ContactUs(),
-    ProfileScreen(),
-  ];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    // Use Navigator to push the selected screen onto the stack
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => _screens[index]),
-    );
-  }
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      backgroundColor: AppColors.primary,
-      showUnselectedLabels: true,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.contact_support_outlined),
-          label: 'About Us',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.phone_in_talk_rounded),
-          label: 'Contact',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      unselectedLabelStyle: const TextStyle(
-        color: AppColors.primary, // Set the text color for unselected items
-      ),
-      selectedItemColor: AppColors.primary,
-      unselectedItemColor: Colors.grey,
-      onTap: _onItemTapped,
-    );
-  }
-}
 
 
