@@ -15,7 +15,9 @@ class ContactUs extends StatelessWidget {
             fontSize: 20,
             color: Colors.white,
           ),),
-          leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back, color: Colors.white,)),
+          leading: IconButton(onPressed: (){
+            Navigator.of(context).pop();
+          }, icon: Icon(Icons.arrow_back, color: Colors.white,)),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
