@@ -1,8 +1,8 @@
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:flutter/material.dart';
 
-import 'my_prescription.dart';
-import 'my_visits.dart';
+import '../prescription/my_prescription.dart';
+import '../visits/my_visits.dart';
 
 class MyAppointment extends StatefulWidget {
   const MyAppointment({Key? key});

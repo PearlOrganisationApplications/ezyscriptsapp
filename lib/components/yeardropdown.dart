@@ -10,9 +10,8 @@ class _DateOfBirthDropDownState extends State<DateOfBirthDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 40,
-      color: Colors.grey,
       child: DropdownButtonFormField<String>(
         value: selectedOption,
         onChanged: (String? newValue) {

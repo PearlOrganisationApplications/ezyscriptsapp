@@ -1,4 +1,4 @@
-import 'package:ezyscripts/screens/my%20doctor.dart';
+import 'package:ezyscripts/screens/my_doctor/my%20doctor.dart';
 import 'package:flutter/material.dart';
 
 class Doctor {

@@ -1,61 +1,66 @@
+import 'package:ezyscripts/screens/document/my_document.dart';
 import 'package:flutter/material.dart';
 
-import '../constant/colors.dart';
+import '../../constant/colors.dart';
 
-class MyPrescription extends StatefulWidget {
-  const MyPrescription({super.key});
+class MyRefill extends StatefulWidget {
+  const MyRefill({super.key});
 
   @override
-  State<MyPrescription> createState() => _MyPrescriptionState();
+  State<MyRefill> createState() => _MyRefillState();
 }
 
-class _MyPrescriptionState extends State<MyPrescription> {
+class _MyRefillState extends State<MyRefill> {
+  String? selectedValue = '0';
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Prescription"),
+        title: const Text("My Refill"),
       ),
       body: SingleChildScrollView(
-
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Form(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      width: size.width * 0.45,
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          label: Text('From Date'),
-                          hintText: "03/02/2024"
-                        ),
-                      ),
+              Container(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: DropdownButton<String>(
+                  underline: const SizedBox(), // Remove the default underline
+                  items: const [
+                    DropdownMenuItem<String>(
+                      value: 'Today',
+                      child: Text('Today'),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      width: size.width * 0.45,
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          label: Text('From Date'),
-                          hintText: "03/02/2024"
-                        ),
-                      ),
+                    DropdownMenuItem<String>(
+                      value: 'Upcoming 15 Days',
+                      child: Text('Upcoming 15 Days'),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: 'Upcoming 30 Days',
+                      child: Text('Upcoming 30 Days'),
                     ),
                   ],
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedValue = value;
+                    });
+                    print('Selected: $value');
+                  },
+                  hint: const Text('Upcoming 15 Days'), // Optional hint text
+                  isExpanded: true,
                 ),
               ),
-              SizedBox(height: 20,),
-              const Text('Status: '),
               const SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.only(left: 8),
+                padding: const EdgeInsets.only(left: 8, right: 8),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(25.0),
@@ -79,17 +84,24 @@ class _MyPrescriptionState extends State<MyPrescription> {
                   onChanged: (String? value) {
                     print('Selected: $value');
                   },
-                  hint: const Text('Select an option'), // Optional hint text
+                  hint: const Text('Refill Allowed'), // Optional hint text
                   isExpanded: true,
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>const  MyPrescription(),));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyDocument(),
+                        ),
+                      );
                     },
                     child: Container(
                       width: size.width * 0.45,
@@ -126,6 +138,40 @@ class _MyPrescriptionState extends State<MyPrescription> {
                 ],
               ),
               const SizedBox(height: 25),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Pharmacy: ',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Colors.green,
+                        radius: 4,
+                      ),
+                      Text(
+                        ' Member',
+                        style: TextStyle(color: Colors.green),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.red,
+                        radius: 4,
+                      ),
+                      Text(
+                        ' Not Member',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 25),
               Container(
                 width: size.width,
                 padding: const EdgeInsets.all(8),
@@ -136,7 +182,7 @@ class _MyPrescriptionState extends State<MyPrescription> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Prescription List',
+                      'My Refill',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -160,7 +206,8 @@ class _MyPrescriptionState extends State<MyPrescription> {
                 width: size.width,
                 child: ListView.builder(
                   //physics: NeverScrollableScrollPhysics(),
-                  itemCount: 2, // Adjust the itemCount based on your actual data
+                  itemCount:
+                      2, // Adjust the itemCount based on your actual data
                   itemBuilder: (context, index) {
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -175,19 +222,22 @@ class _MyPrescriptionState extends State<MyPrescription> {
                             padding: EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children:  [
+                              children: [
                                 Text('Date-Time:\n04/12/2024'),
                                 Row(
                                   children: [
                                     Text('Status: '),
-                                    Text('Active',style: TextStyle(fontWeight: FontWeight.w600,color: Colors.green),),
+                                    Text(
+                                      'Active',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.green),
+                                    ),
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
-
                           Container(
                             width: size.width,
                             color: AppColors.secondary.withOpacity(0.3),
@@ -195,25 +245,23 @@ class _MyPrescriptionState extends State<MyPrescription> {
                               vertical: 12,
                               horizontal: 8,
                             ),
-                            child: Row(
+                            child: const Row(
                               children: [
-                                const Text(
+                                Text(
                                   'eRx Ref. No: Self-2015',
                                   style: TextStyle(color: AppColors.primary),
                                 ),
-                                const Text(
+                                Text(
                                   'Patient ID:2514',
                                   style: TextStyle(color: AppColors.primary),
                                 ),
                               ],
                             ),
                           ),
-
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: const Text("Drug: Sabadiu luia"),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Drug: Sabadiu luia"),
                           ),
-
                           Container(
                             width: size.width,
                             color: AppColors.secondary.withOpacity(0.3),
@@ -231,14 +279,14 @@ class _MyPrescriptionState extends State<MyPrescription> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children:  [
+                              children: [
                                 Container(
                                   width: 100,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
-
-                                      border: Border.all(  color: AppColors.primary,)
-                                  ),
+                                      border: Border.all(
+                                        color: AppColors.primary,
+                                      )),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 8,
@@ -246,7 +294,8 @@ class _MyPrescriptionState extends State<MyPrescription> {
                                   child: const Center(
                                     child: Text(
                                       'Share',
-                                      style: TextStyle(color: AppColors.primary),
+                                      style:
+                                          TextStyle(color: AppColors.primary),
                                     ),
                                   ),
                                 ),
@@ -254,9 +303,9 @@ class _MyPrescriptionState extends State<MyPrescription> {
                                   width: 100,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
-
-                                      border: Border.all(  color: AppColors.primary,)
-                                  ),
+                                      border: Border.all(
+                                        color: AppColors.primary,
+                                      )),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 8,
@@ -264,17 +313,18 @@ class _MyPrescriptionState extends State<MyPrescription> {
                                   child: const Center(
                                     child: Text(
                                       'View',
-                                      style: TextStyle(color: AppColors.primary),
+                                      style:
+                                          TextStyle(color: AppColors.primary),
                                     ),
                                   ),
                                 ),
                                 Container(
                                   width: 100,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-
-                                    border: Border.all(  color: Colors.red,)
-                                  ),
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: Colors.red,
+                                      )),
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
                                     vertical: 8,
@@ -286,7 +336,6 @@ class _MyPrescriptionState extends State<MyPrescription> {
                                     ),
                                   ),
                                 ),
-
                               ],
                             ),
                           ),

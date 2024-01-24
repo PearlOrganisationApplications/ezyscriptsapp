@@ -1,7 +1,7 @@
-import 'package:ezyscripts/screens/login_screen.dart';
-import 'package:ezyscripts/screens/onboarding_screen.dart';
-import 'package:ezyscripts/screens/signup_screen.dart';
-import 'package:ezyscripts/screens/splash_screen.dart';
+import 'package:ezyscripts/screens/login/login_screen.dart';
+import 'package:ezyscripts/screens/onboarding/onboarding_screen.dart';
+import 'package:ezyscripts/screens/signup/signup_screen.dart';
+import 'package:ezyscripts/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white), // Set hamburger icon color to white
+        ),
+      ),
       home: SplashScreen(),
     );
   }

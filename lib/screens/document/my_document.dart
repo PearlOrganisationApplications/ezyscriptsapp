@@ -1,8 +1,8 @@
-import 'package:ezyscripts/screens/my%20doctor.dart';
-import 'package:ezyscripts/screens/my_pharmacy.dart';
+import 'package:ezyscripts/screens/my_doctor/my%20doctor.dart';
+import 'package:ezyscripts/screens/pharmacy/my_pharmacy.dart';
 import 'package:flutter/material.dart';
 
-import '../constant/colors.dart';
+import '../../constant/colors.dart';
 
 class MyDocument extends StatefulWidget {
   const MyDocument({super.key});

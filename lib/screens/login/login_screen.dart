@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../constant/colors.dart';
-import 'bottomscreen.dart';
+import '../../constant/colors.dart';
+import '../bottomsheet/bottomscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,12 +9,11 @@ class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
   bool isDoctorSelected = false;
   bool isPatientSelected = false;
-    final _email=TextEditingController();
-    final _password=TextEditingController();
+  final _email=TextEditingController();
+  final _password=TextEditingController();
   bool passwordShow=false;
   bool rememberMe = false;
   final _formey=GlobalKey<FormState>();
@@ -24,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.white,),
+          icon: const Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -65,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
                 Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -123,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.only(left: 18.0,right: 18),
                 child: TextFormField(
                   controller: _email,
-                  autofillHints: [AutofillHints.email],
+                  autofillHints: const [AutofillHints.email],
                   validator: (value) => value?.isEmpty ?? true
                       ? "Username is required"
                       : null,
@@ -137,13 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.only(left: 18.0,right: 18),
                 child: TextFormField(
                   controller: _password,
-                  autofillHints: [AutofillHints.password],
+                  autofillHints: const [AutofillHints.password],
                   obscureText: !passwordShow,
                   validator: (value) => value?.isEmpty ?? true
                       ? "password is required"
                       : null,
                   decoration:  InputDecoration(
-
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: IconButton(onPressed: () {
                       setState(() {
@@ -152,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                         icon:passwordShow?
                         const Icon(Icons.visibility)
-                            :Icon(Icons.visibility_off)),// Add your desired prefix icon
+                            :const Icon(Icons.visibility_off)),// Add your desired prefix icon
                     labelText: 'password', // Add your desired label text
                   ),
                 ),
@@ -167,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                   ),
-                  Text('Remember Me'),
+                  const Text('Remember Me'),
                 ],
 
               ),

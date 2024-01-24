@@ -1,6 +1,6 @@
 import 'package:ezyscripts/constant/colors.dart';
-import 'package:ezyscripts/screens/login_screen.dart';
-import 'package:ezyscripts/screens/signup_screen.dart';
+import 'package:ezyscripts/screens/login/login_screen.dart';
+import 'package:ezyscripts/screens/signup/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardScreen extends StatelessWidget {
@@ -9,32 +9,34 @@ class OnBoardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: double.infinity, // Full height of the screen
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue, Colors.white, Colors.green],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      body: SafeArea(
+        child: Container(
+          height: double.infinity, // Full height of the screen
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue, Colors.white, Colors.green],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 60,),
-              Image.asset('assets/images/EzyScript1-155x108.png'),
-              const SizedBox(
-                height: 50,
-              ),
-              const Text(
-                'EzyScripts',
-                style: TextStyle(color: AppColors.primary, fontSize: 40),
-              ),
-              const Text(
-                'Connecting patients, doctors, and pharmacies on one platform. It provides comprehensive prescription management for better patient care.',
-                textAlign: TextAlign.center,
-              ),
-            ],
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(height: 60,),
+                Image.asset('assets/images/EzyScript1-155x108.png'),
+                const SizedBox(
+                  height: 50,
+                ),
+                const Text(
+                  'EzyScripts',
+                  style: TextStyle(color: AppColors.primary, fontSize: 40),
+                ),
+                const Text(
+                  'Connecting patients, doctors, and pharmacies on one platform. It provides comprehensive prescription management for better patient care.',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),

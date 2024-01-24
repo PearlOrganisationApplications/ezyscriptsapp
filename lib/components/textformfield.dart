@@ -8,21 +8,27 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final bool obscureText;
   final validator;
+  final Function()? onTap;
+  final Widget ?suffix;
 
   CustomTextFormField({
+    this.suffix,
     required this.labelText,
     required this.controller,
     this.obscureText = false,
-    this.validator
+    this.validator,
+    this.onTap
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: onTap,
       validator: validator,
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
+        suffixIcon: suffix,
         labelText: labelText,
       ),
     );

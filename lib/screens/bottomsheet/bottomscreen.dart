@@ -1,10 +1,10 @@
+import 'package:ezyscripts/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../constant/colors.dart';
-import 'About Us/about_us.dart';
-import 'Contact Us/contact_us.dart';
-import 'Home Screen/home_screen.dart';
-import 'Profile Screen/profile_screen.dart';
+import '../../../constant/colors.dart';
+import '../about/about_us.dart';
+import '../contact_us/contact_us.dart';
+import '../home/home_screen.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
@@ -17,10 +17,10 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens =   [
-    HomeScreen(),
-    AboutUs(),
-    ContactUs(),
-    ProfileScreen(),
+    const HomeScreen(),
+    const AboutUs(),
+    const ContactUs(),
+    const ProfileScreen(),
   ];
   void _onItemTapped(int index) {
     setState(() {

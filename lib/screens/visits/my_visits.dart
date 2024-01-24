@@ -1,7 +1,7 @@
-import 'package:ezyscripts/screens/my_refill.dart';
+import 'package:ezyscripts/screens/refil/my_refill.dart';
 import 'package:flutter/material.dart';
 
-import '../constant/colors.dart';
+import '../../constant/colors.dart';
 
 class MyVisit extends StatefulWidget {
   const MyVisit({super.key});
