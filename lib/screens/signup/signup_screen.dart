@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ezyscripts/screens/login/login_screen.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/custombutton.dart';
 import '../../components/textformfield.dart';
@@ -59,6 +61,7 @@ class _SignupState extends State<Signup> {
       print('Error picking document: $e');
     }
   }
+
   Future<void> _launchUrl() async {
     if (!await canLaunch('https://ezyscripts.com.au/')) {
       throw Exception('Could not launch ');
@@ -66,6 +69,7 @@ class _SignupState extends State<Signup> {
       await launch('https://ezyscripts.com.au/');
     }
   }
+
   String getFileName(String path) {
     return basename(path);
   }
@@ -137,23 +141,27 @@ class _SignupState extends State<Signup> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "First Name is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "First Name is required"
+                                : null,
                             labelText: "Enter First Name",
                             controller: _fName),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "Last Name is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "Last Name is required"
+                                : null,
                             labelText: "Enter Last Name",
                             controller: _lName),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "height is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "height is required"
+                                : null,
                             labelText: "Enter height ",
                             controller: _height),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "Weight is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "Weight is required"
+                                : null,
                             labelText: "Enter Weight ",
                             controller: _weight),
                         Container(
@@ -190,7 +198,8 @@ class _SignupState extends State<Signup> {
                             ],
                             decoration: InputDecoration(
                               isDense: true,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 12),
                               labelText: _selectedOption,
                             ),
                           ),
@@ -205,12 +214,16 @@ class _SignupState extends State<Signup> {
                             );
                             if (datePicker != null) {
                               setState(() {
-                                _dob.text = datePicker.toLocal().toString().split(' ')[0];
+                                _dob.text = datePicker
+                                    .toLocal()
+                                    .toString()
+                                    .split(' ')[0];
                               });
                             }
                           },
-                          validator: (value) =>
-                          value?.isEmpty ?? true ? "Date of birth is required" : null,
+                          validator: (value) => value?.isEmpty ?? true
+                              ? "Date of birth is required"
+                              : null,
                           labelText: "Select data of birth",
                           controller: _dob,
                         ),
@@ -221,8 +234,9 @@ class _SignupState extends State<Signup> {
                             SizedBox(
                               width: 140,
                               child: CustomTextFormField(
-                                validator: (value) =>
-                                value?.isEmpty ?? true ? "age is required" : null,
+                                validator: (value) => value?.isEmpty ?? true
+                                    ? "age is required"
+                                    : null,
                                 labelText: "Enter age",
                                 controller: _age,
                               ),
@@ -231,29 +245,32 @@ class _SignupState extends State<Signup> {
                           ],
                         ),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "contact number is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "contact number is required"
+                                : null,
                             labelText: "Enter contact number",
                             controller: _contact),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "email is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "email is required"
+                                : null,
                             labelText: "Enter email",
                             controller: _email),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "email is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "email is required"
+                                : null,
                             labelText: "Medicare number",
-                            suffix:  Column(
+                            suffix: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
                                   icon: Icon(Icons.arrow_drop_up),
-                                  onPressed: (){},
+                                  onPressed: () {},
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.arrow_drop_down_sharp),
-                                  onPressed: (){},
+                                  onPressed: () {},
                                 ),
                               ],
                             ),
@@ -276,50 +293,58 @@ class _SignupState extends State<Signup> {
                           margin: EdgeInsets.only(top: 16),
                           child: _filePath.isNotEmpty
                               ? Card(
-                            elevation: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.file_present, size: 20),
-                                  SizedBox(width: 8),
-                                  Text('Selected File:'),
-                                  SizedBox(width: 8),
-                                  Expanded(child: Text(getFileName(_filePath))),
-                                ],
-                              ),
-                            ),
-                          )
+                                  elevation: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.file_present,
+                                            size: 20),
+                                        SizedBox(width: 8),
+                                        Text('Selected File:'),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                            child:
+                                                Text(getFileName(_filePath))),
+                                      ],
+                                    ),
+                                  ),
+                                )
                               : SizedBox.shrink(),
                         ),
                         CustomTextFormField(
                             validator: (value) =>
-                            value?.isEmpty ?? true ? "password" : null,
+                                value?.isEmpty ?? true ? "password" : null,
                             labelText: "Enter password",
                             controller: _password),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "address 1 is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "address 1 is required"
+                                : null,
                             labelText: "address 1",
                             controller: _address1),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "Date of birth is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "Date of birth is required"
+                                : null,
                             labelText: "address 2",
                             controller: _address2),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "address 2 is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "address 2 is required"
+                                : null,
                             labelText: "Enter zipcode",
                             controller: _zipCode),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "State is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "State is required"
+                                : null,
                             labelText: "Enter State",
                             controller: _state),
                         CustomTextFormField(
-                            validator: (value) =>
-                            value?.isEmpty ?? true ? "city is required" : null,
+                            validator: (value) => value?.isEmpty ?? true
+                                ? "city is required"
+                                : null,
                             labelText: "select city",
                             controller: _city),
                       ],
@@ -329,11 +354,8 @@ class _SignupState extends State<Signup> {
               ),
               CustomButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-
-                  }
-
-                   userSignup();
+                  if (_formKey.currentState!.validate()) {}
+                  userSignup(context);
                 },
                 text: "Submit",
               ),
@@ -358,19 +380,19 @@ class _SignupState extends State<Signup> {
     );
   }
 
-  void userSignup() async {
+  void userSignup(BuildContext context) async {
+    final currentContext = context;
     try {
       // Ensure _filePath is not empty before making the request
       if (_filePath.isEmpty) {
-        print('Please pick a document before signing up.');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please pick a document before signing up.',)));
+        log('Please pick a document before signing up.');
         return;
       }
-
       // Create a MultipartRequest
       var request = http.MultipartRequest('POST', Uri.parse(Api.signup));
-
       // Add form fields
-      request.fields['name'] = _fName.text;
+      request.fields['name'] = '${_fName.text} ${_lName.text}';
       request.fields['contact'] = _contact.text;
       request.fields['email'] = _email.text;
       request.fields['gender'] = _selectedOption.toString();
@@ -379,23 +401,35 @@ class _SignupState extends State<Signup> {
       request.fields['state'] = _state.text;
       request.fields['city'] = _city.text;
       request.fields['zip_code'] = _zipCode.text;
-      request.fields['address'] = _address1.text;
+      request.fields['address'] = '${_address1.text}${_address2.text}';
       request.fields['password'] = _password.text;
       request.fields['height'] = _height.text;
       request.fields['weight'] = _weight.text;
 
-      // Add the PDF file
       var file = await http.MultipartFile.fromPath('document', _filePath);
       request.files.add(file);
 
       // Send the request
       var response = await request.send();
-
       // Check the response
       if (response.statusCode == 200) {
+        log('Signup successful');
+        final responseString = await response.stream.bytesToString();
+        var jsonResponse = json.decode(responseString);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(jsonResponse['message'])));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const LoginScreen()));
+        if (jsonResponse.containsKey('token')) {
+          var token = jsonResponse['token'];
+          log('Token: $token');
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('token', token);
+          log(prefs.getString('token').toString());
+        }
       } else {
-        log('Failed to upload document. Status code: ${response.statusCode}');
-        print('Response Body: ${await response.stream.bytesToString()}');
+        final responseString = await response.stream.bytesToString();
+        log('${response.statusCode}');
+
+        // You can handle the responseString as needed for debugging or logging.
       }
     } catch (e) {
       print('Error during signup: $e');

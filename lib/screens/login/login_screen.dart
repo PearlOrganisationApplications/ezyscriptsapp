@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/colors.dart';
+import '../../repository/services/api_class.dart';
 import '../bottomsheet/bottomscreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isDoctorSelected = false;
   bool isPatientSelected = false;
-  final _email=TextEditingController();
+  final _userName=TextEditingController();
   final _password=TextEditingController();
   bool passwordShow=false;
   bool rememberMe = false;
@@ -121,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 18.0,right: 18),
                 child: TextFormField(
-                  controller: _email,
+                  controller: _userName,
                   autofillHints: const [AutofillHints.email],
                   validator: (value) => value?.isEmpty ?? true
                       ? "Username is required"
@@ -175,9 +181,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(AppColors.primary), // Replace 'Colors.blue' with your desired color
                       ),
-                      onPressed: (){
+                      onPressed: ()async{
                         if(_formey.currentState!.validate()){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const BottomBar()));
+                          userLogin(context);
 
                         }
                       }, child: const Text('Login',style: TextStyle(color: Colors.white),)))
@@ -187,5 +193,36 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+  void userLogin(BuildContext context) async {
+    try {
+      String token = await Token.loadToken();
+      log(token);
+      final response = await http.post(
+        Uri.parse(Api.login),
+        headers: {'Authorization': 'Bearer $token'},
+        body: {
+          'username': _userName.text,
+          'password': _password.text,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        log('Successful Login');
+        var result = jsonDecode(response.body);
+        var token=result['token'];
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', token);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message'])));
+        await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const BottomBar()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(jsonDecode(response.body)['message'])));
+        log('Error: ${response.body}');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+
+      log('Error during login: $e');
+    }
   }
 }
