@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../constant/colors.dart';
-import '../About Us/about_us.dart';
-import '../Contact Us/contact_us.dart';
 import '../Profile Screen/profile_screen.dart';
+import '../about_us/about_us.dart';
+import '../contact_us/contact_us.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -193,10 +193,10 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens =   [
-    HomeScreen(),
-    AboutUs(),
-    ContactUs(),
-    ProfileScreen(),
+    const HomeScreen(),
+    const AboutUs(),
+   const  ContactUs(),
+   const  ProfileScreen(),
   ];
   void _onItemTapped(int index) {
     setState(() {

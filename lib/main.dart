@@ -1,5 +1,4 @@
-import 'package:ezyscripts/screens/Home%20Screen/home_screen.dart';
-import 'package:ezyscripts/screens/login_screen.dart';
+import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

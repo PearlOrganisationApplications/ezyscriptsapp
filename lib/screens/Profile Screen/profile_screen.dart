@@ -1,9 +1,36 @@
+import 'package:ezyscripts/screens/Profile%20Screen/profile_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constant/colors.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late Future<UserDetails> _userDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    _userDetails = ApiService.getProfileDetails();
+  }
+  // ******** Function to Pick Profile Image ******** //
+  final ImagePicker picker = ImagePicker();
+  Future<void> _getImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      // Use the picked image file here
+      setState(() {
+        // Update UI with the picked image
+      });
+    }
+    Navigator.pop(context); // Close the bottom modal sheet
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,213 +45,241 @@ class ProfileScreen extends StatelessWidget {
           Navigator.of(context).pop();
         }, icon: const Icon(Icons.arrow_back, color: Colors.white,)),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              Center(
-                child: Stack(
-                  children: [
-                    CircleAvatar(
-                    radius: 52,
-                    child: ClipOval(
-                      child: Image.asset('assets/images/profile.png'),
-                    ),
-                                  ),
-                    Positioned(
-                        top :65,
-                        left: 60,
-                        child: Container(
-                          height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(50)
-                            ),
-                            child: IconButton(onPressed: (){}, icon: const Icon(Icons.camera_alt, size: 24,color: Colors.white ,))))
-                  ],
-                ),),
-
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                   const  Text('User Name', style: TextStyle(fontSize: 16, color: Colors.black),),
-                    IconButton(onPressed: (){
-                      _showInputDialog(context);
-        
-                    }, icon: const Icon(Icons.edit))
-                  ],
-                ),
-              ),
-              Divider(
-                color: Colors.grey.shade400,
-                thickness: 2,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: FutureBuilder<UserDetails>(
+        future: _userDetails,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      } else {
+        final userDetails = snapshot.data!;
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12,),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Stack(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.addressCard,
-                            color: AppColors.primary,
-                            size: 22,
-                          ),
-                           SizedBox(width: 10,),
-                          Column(
-                            crossAxisAlignment:CrossAxisAlignment.start,
-                            children: [
-                              Text('Patient ID:', style: TextStyle(color: AppColors.primary, fontSize: 16),
-                              ),
-                              Text('25226', style: TextStyle(color: Colors.black, fontSize: 14),)
-                            ],
-                          )
-                        ],
+                      CircleAvatar(
+                        radius: 52,
+                        child: ClipOval(
+                          child: Image.network(userDetails.profilePic),
+                        ),
                       ),
-                   SizedBox(height: 15,),
-                      // *** Gender
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.children,
-                             color: AppColors.primary,
-                            size: 22,
-                          ),
-                          SizedBox(width: 10,),
-                          Column(
-                            crossAxisAlignment:CrossAxisAlignment.start,
-                            children: [
-                              Text('Gender:', style: TextStyle(color: AppColors.primary, fontSize: 16),
+                      Positioned(
+                          top: 65,
+                          left: 60,
+                          child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(50)
                               ),
-                              Text('Female', style: TextStyle(color: Colors.black, fontSize: 14),)
-                            ],
-                          )
-                        ],
-                      )
+                              child: IconButton(onPressed: () {
+                                _showImageSourceOptions();
+                              },
+                                  icon: const Icon(Icons.camera_alt, size: 24,
+                                    color: Colors.white,))))
+                    ],
+                  ),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                       Text(userDetails.name,
+                        style: const TextStyle(fontSize: 16, color: Colors.black),),
+                      IconButton(onPressed: () {
+                        _showInputDialog(context);
+                      }, icon: const Icon(Icons.edit))
                     ],
                   ),
-                  SizedBox(width: 10,),
-                  //*** Second Column
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.calendarDays,
-                            color: AppColors.primary,
-                            size: 22,
-                          ),
-                          SizedBox(width: 10,),
-                          Column(
-                            crossAxisAlignment:CrossAxisAlignment.start,
-                            children: [
-                              Text('Date of Birth:', style: TextStyle(color: AppColors.primary, fontSize: 16),
-                              ),
-                              Text('01/01/1997', style: TextStyle(color: Colors.black, fontSize: 14),)
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 15,),
-                      // *** Gender
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          FaIcon(
-                            FontAwesomeIcons.phoneVolume,
-                            color: AppColors.primary,
-                            size: 22,
-                          ),
-                          SizedBox(width: 10,),
-                          Column(
-                            crossAxisAlignment:CrossAxisAlignment.start,
-                            children: [
-                              Text('Contact No:', style: TextStyle(color: AppColors.primary, fontSize: 16),
-                              ),
-                              Text('(828)-742-1192', style: TextStyle(color: Colors.black, fontSize: 14),)
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  )
-        
-                ],
-              ),
-              Divider(
-                color: Colors.grey.shade400,
-                thickness: 2,
-              ),
-              const Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 33),
-                child:  Column(
+                ),
+                Divider(
+                  color: Colors.grey.shade400,
+                  thickness: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.mail_outline_outlined, color: AppColors.primary,size: 26,),
-                     SizedBox(width: 10,),
-                        Text('User@gmail.com', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500),)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const FaIcon(
+                              FontAwesomeIcons.addressCard,
+                              color: AppColors.primary,
+                              size: 22,
+                            ),
+                            const SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                               const  Text('Patient ID:', style: TextStyle(
+                                    color: AppColors.primary, fontSize: 16),
+                                ),
+                                Text(userDetails.id.toString(), style: const TextStyle(
+                                    color: Colors.black, fontSize: 14),)
+                              ],
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 15,),
+                        // *** Gender
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                           const  FaIcon(
+                              FontAwesomeIcons.children,
+                              color: AppColors.primary,
+                              size: 22,
+                            ),
+                          const   SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                              const   Text('Gender:', style: TextStyle(
+                                    color: AppColors.primary, fontSize: 16),
+                                ),
+                                Text( userDetails.gender.toString(), style: const TextStyle(
+                                    color: Colors.black, fontSize: 14),)
+                              ],
+                            )
+                          ],
+                        )
                       ],
                     ),
-                   SizedBox(height: 15,),
-                    Row(
+                    const SizedBox(width: 10,),
+                    //*** Second Column
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.location_on, color: AppColors.primary,size: 26,),
-                     SizedBox(width: 10,),
-                        Text('Street 5', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w500),)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                          const   FaIcon(
+                              FontAwesomeIcons.calendarDays,
+                              color: AppColors.primary,
+                              size: 22,
+                            ),
+                          const   SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                               const  Text('Date of Birth:', style: TextStyle(
+                                    color: AppColors.primary, fontSize: 16),
+                                ),
+                                Text(userDetails.dob, style: const TextStyle(
+                                    color: Colors.black, fontSize: 14),)
+                              ],
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 15,),
+                        // *** Gender
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                          const   FaIcon(
+                              FontAwesomeIcons.phoneVolume,
+                              color: AppColors.primary,
+                              size: 22,
+                            ),
+                          const   SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Contact No:', style: TextStyle(
+                                    color: AppColors.primary, fontSize: 16),
+                                ),
+                                Text(userDetails.contactNumber, style: const TextStyle(
+                                    color: Colors.black, fontSize: 14),)
+                              ],
+                            )
+                          ],
+                        )
                       ],
                     )
                   ],
                 ),
-              ),
-              Divider(
-                color: Colors.grey.shade400,
-                thickness: 2,
-              ),
-              const Padding(
-                padding:  EdgeInsets.only(left: 35, right: 20),
-                child:  Text('This is about section',
-
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(color: AppColors.primary),),
-              ),
-              const SizedBox(height: 20,),
-              Divider(
-                color: Colors.grey.shade400,
-                thickness: 2,
-              ),
-              Center(
-                child: Container(
-                  height: 50,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: const Center(child: Text('Deactivate Account', style: TextStyle(fontSize: 16,color: Colors.white),),),
+                Divider(
+                  color: Colors.grey.shade400,
+                  thickness: 2,
                 ),
-              )
-            ],
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 33),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                         const  Icon(Icons.mail_outline_outlined,
+                            color: AppColors.primary, size: 26,),
+                         const  SizedBox(width: 10,),
+                          Text(userDetails.email, style: const TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w500),)
+                        ],
+                      ),
+                     const  SizedBox(height: 15,),
+                      Row(
+                        children: [
+                        const   Icon(Icons.location_on, color: AppColors.primary,
+                            size: 26,),
+                          SizedBox(width: 10,),
+                          Text(userDetails.address, style: const TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w500),)
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey.shade400,
+                  thickness: 2,
+                ),
+                 Padding(
+                  padding: const EdgeInsets.only(left: 35, right: 20),
+                  child: Text(userDetails.about,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(color: AppColors.primary),),
+                ),
+                const SizedBox(height: 20,),
+                Divider(
+                  color: Colors.grey.shade400,
+                  thickness: 2,
+                ),
+                Center(
+                  child: Container(
+                    height: 50,
+                    width: 300,
+                    decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: const Center(child: Text('Deactivate Account',
+                      style: TextStyle(fontSize: 16, color: Colors.white),),),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-  //*** Alert Dailog box for Edit Profile *** //
+        );
+      }
+    }  ));
 
+
+
+
+  }
+
+  //*** Alert Dialog box for Edit Profile *** //
   void _showInputDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -287,6 +342,7 @@ class ProfileScreen extends StatelessWidget {
       },
     );
   }
+
   bool _validateData(String dob, String gender, String about) {
     if (dob.isEmpty || gender.isEmpty || about.isEmpty) {
       return false;
@@ -294,6 +350,44 @@ class ProfileScreen extends StatelessWidget {
     return true;
   }
 
+
+  //********* Function to Open Bottom Sheet ******* //
+
+  Future<void> _showImageSourceOptions() async {
+    showModalBottomSheet(
+
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Container(
+            padding: const EdgeInsets.only(top : 15),
+            height: MediaQuery.of(context).size.height * 0.18,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.camera),
+                  title: const Text('Take a photo'),
+                  onTap: () {
+                    _getImage(ImageSource.camera);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Choose from gallery'),
+                  onTap: () {
+                    _getImage(ImageSource.gallery);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
+
+
 
 
