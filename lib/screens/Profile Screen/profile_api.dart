@@ -1,9 +1,12 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String apiUrl = 'https://test.pearl-developer.com/eazyscript/public/api';
-  static const String staticToken = "3|IMW1IylGRQNACz51FP8RXGloBrpm3NRPEvXwdFu8ac039a3e";
+  static const String apiUrl =
+      'https://test.pearl-developer.com/eazyscript/public/api';
+  static const String staticToken =
+      "3|IMW1IylGRQNACz51FP8RXGloBrpm3NRPEvXwdFu8ac039a3e";
 
   static Future<UserDetails> getProfileDetails() async {
     try {
@@ -13,7 +16,6 @@ class ApiService {
           'Authorization': 'Bearer $staticToken',
           'Content-Type': 'application/json',
         },
-
       );
 
       if (response.statusCode == 200) {
@@ -22,7 +24,7 @@ class ApiService {
         return UserDetails(
           id: userDetails['id'],
           profilePic: userDetails['profile_pic'],
-          name : userDetails['name'],
+          name: userDetails['name'],
           dob: userDetails['dob'],
           gender: userDetails['gender'],
           contactNumber: userDetails['contact'],
@@ -30,8 +32,9 @@ class ApiService {
           address: userDetails['address'],
           about: userDetails['about'],
         );
-      }  else {
-        print('API Error - Status Code: ${response.statusCode}, Body: ${response.body}');
+      } else {
+        print(
+            'API Error - Status Code: ${response.statusCode}, Body: ${response.body}');
         throw Exception('Failed to load profile details');
       }
     } catch (e) {
@@ -39,6 +42,7 @@ class ApiService {
     }
   }
 }
+
 class UserDetails {
   final int id;
   final String name;
@@ -54,7 +58,7 @@ class UserDetails {
     required this.name,
     required this.id,
     required this.dob,
-     required this.gender,
+    required this.gender,
     required this.profilePic,
     required this.contactNumber,
     required this.email,
