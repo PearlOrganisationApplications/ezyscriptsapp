@@ -1,28 +1,15 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/textsize.dart';
+import '../../components/validator.dart';
 import '../../constant/colors.dart';
-import '../../repository/services/api_class.dart';
-import '../bottomsheet/bottomscreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-class _LoginScreenState extends State<LoginScreen> {
-  bool isDoctorSelected = false;
-  bool isPatientSelected = false;
-  final _userName=TextEditingController();
-  final _password=TextEditingController();
-  bool passwordShow=false;
-  bool rememberMe = false;
-  final _formey=GlobalKey<FormState>();
+class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: _formey,
+          key: formey,
           child: Column(
             children: [
               Stack(
@@ -127,11 +114,9 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 18.0,right: 18),
                 child: TextFormField(
-                  controller: _userName,
+                  controller: userName,
                   autofillHints: const [AutofillHints.email],
-                  validator: (value) => value?.isEmpty ?? true
-                      ? "Username is required"
-                      : null,
+                  validator: validateUserName,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person),
                     labelText: 'Username', // Add your desired label text
@@ -141,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 18.0,right: 18),
                 child: TextFormField(
-                  controller: _password,
+                  controller: password1,
                   autofillHints: const [AutofillHints.password],
                   obscureText: !passwordShow,
                   validator: (value) => value?.isEmpty ?? true
@@ -173,7 +158,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const Text('Remember Me'),
                 ],
-
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width*0.97,
@@ -182,47 +166,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         backgroundColor: MaterialStateProperty.all<Color>(AppColors.primary), // Replace 'Colors.blue' with your desired color
                       ),
                       onPressed: ()async{
-                        if(_formey.currentState!.validate()){
+                        userLogin(context);
+                        if(formey.currentState!.validate()){
                           userLogin(context);
-
                         }
-                      }, child: const Text('Login',style: TextStyle(color: Colors.white),)))
+                      }, child:  Text('Login',style:AppStyles.subtitleStyle().copyWith(color: Colors.white))))
             ],
-
           ),
         ),
       ),
     );
-  }
-  void userLogin(BuildContext context) async {
-    try {
-      String token = await Token.loadToken();
-      log(token);
-      final response = await http.post(
-        Uri.parse(Api.login),
-        headers: {'Authorization': 'Bearer $token'},
-        body: {
-          'username': _userName.text,
-          'password': _password.text,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        log('Successful Login');
-        var result = jsonDecode(response.body);
-        var token=result['token'];
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', token);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result['message'])));
-        await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const BottomBar()));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(jsonDecode(response.body)['message'])));
-        log('Error: ${response.body}');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-
-      log('Error during login: $e');
-    }
   }
 }
