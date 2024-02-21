@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:ezyscripts/screens/login/login_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/custombutton.dart';
@@ -50,6 +51,7 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
   String getFileName(String path) {
     return basename(path);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,10 +192,8 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                             );
                             if (datePicker != null) {
                               setState(() {
-                                dob.text = datePicker
-                                    .toLocal()
-                                    .toString()
-                                    .split(' ')[0];
+                                dob.text = datePicker.toLocal().toString().split(' ')[0];
+                                age1 = calculateAge(datePicker);
                               });
                             }
                           },
@@ -203,27 +203,29 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                           labelText: "Select data of birth",
                           controller: dob,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            SizedBox(
-                              width: 140,
-                              child: CustomTextFormField(
-                                validator: (value) => value?.isEmpty ?? true
-                                    ? "age is required"
-                                    : null,
-                                labelText: "Enter age",
-                                controller: age,
-                              ),
-                            ),
-                            SizedBox(width: 140, child: DateOfBirthDropDown())
-                          ],
+                        SizedBox(
+                          width: 140,
+                          child: CustomTextFormField(
+                            // validator: (value) => value?.isEmpty ?? true
+                            //     ? "age is required"
+                            //     : null,
+                            labelText: "${age1}   Year",
+                            controller: age,
+                          ),
                         ),
-                        CustomTextFormField(
-                            validator: validateMobile,
-                            labelText: "Enter contact number",
-                            controller: contact),
+                        IntlPhoneField(
+                          controller: contact,
+                          flagsButtonPadding: const EdgeInsets.all(8),
+                          dropdownIconPosition: IconPosition.trailing,
+                          decoration: const InputDecoration(
+                            labelText: 'Phone Number',
+                          ),
+                          initialCountryCode: 'IN',
+
+                          onChanged: (phone) {
+                            print(phone.completeNumber);
+                          },
+                        ),
                         CustomTextFormField(
                             validator: validateEmail,
                             labelText: "Enter email",
@@ -233,19 +235,6 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                                 ? "Medicare number  is required"
                                 : null,
                             labelText: "Medicare number",
-                            suffix: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_drop_up),
-                                  onPressed: () {},
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_drop_down_sharp),
-                                  onPressed: () {},
-                                ),
-                              ],
-                            ),
                             controller: medicare),
                         ElevatedButton(
                           onPressed: _pickDocument,
@@ -257,7 +246,7 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                             children: [
                               Icon(Icons.attach_file, size: 20),
                               SizedBox(width: 8),
-                              Text('Add Documents'),
+                              Text('Licence upload'),
                             ],
                           ),
                         ),
@@ -346,5 +335,15 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
         ),
       ),
     );
+  }
+  int calculateAge(DateTime selectedDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - selectedDate.year;
+    if (currentDate.month < selectedDate.month ||
+        (currentDate.month == selectedDate.month &&
+            currentDate.day < selectedDate.day)) {
+      age--;
+    }
+    return age;
   }
 }

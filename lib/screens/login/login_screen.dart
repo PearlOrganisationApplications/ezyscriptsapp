@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/textsize.dart';
@@ -10,6 +13,19 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
+  bool enable=false;
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen for changes in the text field
+    email1.addListener(() {
+      setState(() {
+        // Update the visibility of the login button based on whether the text field is empty or not
+        enable = email1.text.isNotEmpty;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
                     color: AppColors.primary,
                   ),
                   Positioned(
-
                     left: 60,
                     right: 60,
                     bottom: -6,
@@ -114,12 +129,12 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
               Padding(
                 padding: const EdgeInsets.only(left: 18.0,right: 18),
                 child: TextFormField(
-                  controller: userName,
+                  controller: email1,
                   autofillHints: const [AutofillHints.email],
                   validator: validateUserName,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person),
-                    labelText: 'Username', // Add your desired label text
+                    labelText: 'Email', // Add your desired label text
                   ),
                 ),
               ),
@@ -161,16 +176,18 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width*0.97,
-                  child: ElevatedButton(
+                  child:enable? ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(AppColors.primary), // Replace 'Colors.blue' with your desired color
                       ),
                       onPressed: ()async{
-                        userLogin(context);
                         if(formey.currentState!.validate()){
                           userLogin(context);
                         }
-                      }, child:  Text('Login',style:AppStyles.subtitleStyle().copyWith(color: Colors.white))))
+                      }, child:  Text('Login',style:AppStyles.subtitleStyle().copyWith(color: Colors.white)
+                  )
+                  ):Container()
+              )
             ],
           ),
         ),

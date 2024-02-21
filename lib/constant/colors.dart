@@ -7,20 +7,23 @@ class AppColors {
   static const accent = Color(0xFFFFCD68);
 }
 class Token {
-  final String token='';
-  static Future<String> loadToken() async{
-    SharedPreferences prefs;
-    String token;
+  static Future<void> clearToken() async {
+    // Your logic to clear or remove the token, for example:
+    // SharedPreferences, secure storage, or any other method you're using
 
-    // Assuming this code is inside an async function
-    prefs = await SharedPreferences.getInstance();
-    token = prefs.getString('token') ?? '';
-
-    return token;
+    // In this example, using SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
   }
+
 }
-
-
+Future<String> getToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  token = prefs.getString('token');
+  print(token);
+  return token ?? ''; // return token or an empty string if token is null
+}
+String ?token;
 
 
 

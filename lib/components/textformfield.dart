@@ -22,14 +22,19 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      onTap: onTap,
-      validator: validator,
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        suffixIcon: suffix,
-        labelText: labelText,
+    return SizedBox(
+      height: 50,
+      child: TextFormField(
+
+        onTap: onTap,
+        validator: validator,
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          suffixIcon: suffix,
+          labelText: labelText,
+        ),
       ),
     );
   }

@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:ezyscripts/components/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path/path.dart';
+import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../constant/colors.dart';
 import '../repository/services/api_class.dart';
-import '../screens/bottomsheet/bottomscreen.dart';
+import '../screens/home/home_screen.dart';
 import '../screens/login/login_screen.dart';
-import 'package:http/http.dart'as http;
 
 mixin FormValidationMixin {
   String selectedUserType = '';
@@ -22,12 +21,14 @@ mixin FormValidationMixin {
   bool isDoctorSelected = false;
   bool isPatientSelected = false;
   final formey=GlobalKey<FormState>();
+  int ?age1;
 
  final TextEditingController fName = TextEditingController();
  final TextEditingController lName = TextEditingController();
  final TextEditingController height = TextEditingController();
  final TextEditingController gender = TextEditingController();
  final TextEditingController email = TextEditingController();
+ final TextEditingController email1 = TextEditingController();
  final TextEditingController dob = TextEditingController();
   final TextEditingController address1 = TextEditingController();
   final TextEditingController address2 = TextEditingController();
@@ -113,7 +114,7 @@ mixin FormValidationMixin {
       request.fields['contact'] = contact.text;
       request.fields['email'] = email.text;
       request.fields['gender'] = selectedOption.toString();
-      request.fields['age'] = age.text;
+      request.fields['age'] = age1.toString();
       request.fields['dob'] = dob.text;
       request.fields['state'] = state.text;
       request.fields['city'] = city.text;
@@ -138,13 +139,14 @@ mixin FormValidationMixin {
         if (jsonResponse.containsKey('token')) {
           var token = jsonResponse['token'];
           log('Token: $token');
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('token', token);
-          log(prefs.getString('token').toString());
+          // SharedPreferences prefs = await SharedPreferences.getInstance();
+          // prefs.setString('token', token);
         }
       } else {
         final responseString = await response.stream.bytesToString();
-        log('${response.statusCode}');
+        var jsonResponse = json.decode(responseString);
+        CustomToast.showToast(jsonResponse['message']);
+        log('${jsonDecode(responseString)}');
         // You can handle the responseString as needed for debugging or logging.
       }
     } catch (e) {
@@ -156,17 +158,15 @@ mixin FormValidationMixin {
   //login function
   void userLogin(BuildContext context) async {
     try {
-      String token = await Token.loadToken();
-      log(token);
+      // String token = await Token.loadToken();
       final response = await http.post(
         Uri.parse(Api.login),
-        headers: {'Authorization': 'Bearer $token'},
+        // headers: {'Authorization': 'Bearer $token'},
         body: {
-          'username': userName.text,
+          'email': email1.text,
           'password': password1.text,
         },
       );
-
       if (response.statusCode == 200) {
         log('Successful Login');
         var result = jsonDecode(response.body);
@@ -174,7 +174,15 @@ mixin FormValidationMixin {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
         CustomToast.showToast( result['message']);
-        await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const BottomBar()));
+        await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+          return WillPopScope(
+            onWillPop: () async {
+              // Returning false here prevents the route from being popped
+              return false;
+            },
+            child: HomeScreen(),
+          );
+        }));
       } else {
         CustomToast.showToast(jsonDecode(response.body)['message']);
         log('Error: ${response.body}');
@@ -188,7 +196,7 @@ mixin FormValidationMixin {
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1
       );
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
 
       log('Error during login: $e');
     }

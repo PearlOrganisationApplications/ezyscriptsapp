@@ -67,6 +67,7 @@ class OnBoardScreen extends StatelessWidget {
               ),
               InkWell(
                 onTap: (){
+
                   Navigator.push(context, MaterialPageRoute(builder:(context) => const Signup(),));
                 },
                 child: Container(

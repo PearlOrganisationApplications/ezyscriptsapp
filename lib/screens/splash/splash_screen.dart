@@ -1,6 +1,8 @@
-import 'package:ezyscripts/screens/login/login_screen.dart';
+import 'package:ezyscripts/constant/images.dart';
+import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../constant/colors.dart';
 import '../onboarding/onboarding_screen.dart';
 class SplashScreen extends StatefulWidget {
   @override
@@ -10,18 +12,16 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    getToken();
     super.initState();
-
-    // Delay for 3 seconds and then navigate to the login page
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => OnBoardScreen(),
+          builder: (context) => token==null?OnBoardScreen():HomeScreen(),
         ),
       );
-    });
+    }); // Closing parenthesis was missing here
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/images/EzyScript1-155x108.png', // Replace with your image asset path
+                 AppImages.kLogo, // Replace with your image asset path
                   width: 150,
                   height: 150,
                 ),
