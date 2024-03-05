@@ -1,13 +1,16 @@
 import 'package:ezyscripts/screens/bloodtest/blood_test.dart';
+import 'package:ezyscripts/screens/cart/cart_screen.dart';
 import 'package:ezyscripts/screens/refil/step1/step1_screen.dart';
 import 'package:ezyscripts/screens/specialist_referals/specialist_referals.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../constant/colors.dart';
+import '../../controller/totalprice controller.dart';
 import '../../database/data_helper.dart';
 import '../about_us/about_us.dart';
 import '../contact_us/contact_us.dart';
-import '../document/my_document.dart';
+import '../medical_certificate/my_document.dart';
 import '../profile/profile_api.dart';
 import '../profile/profile_screen.dart';
 import '../request_consultaion/request_consultaion.dart';
@@ -20,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final MedicalController medicalController = Get.put(MedicalController());
   late Future<UserDetails> _userDetails;
   late Image image;
   final dbHelper = DBHelper.instance;
@@ -43,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Map<String, dynamic>> result = await dbHelper.queryAll();
     print('Query result: $result');
   }
+ void totalQuantity(){}
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +212,11 @@ class _HomeScreenState extends State<HomeScreen> {
             Stack(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () async{
+                    getCartDetils();
+                    await Future.delayed(Duration(seconds: 3));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
+                  },
                   icon: const Icon(
                     Icons.shopping_cart_rounded,
                     size: 30,
@@ -223,16 +232,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       shape: BoxShape.circle,
                       color: Colors.grey,
                     ),
-                    child: const Center(
-                        child: Text(
-                      "2",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
+                    child:  Center(
+                        child:   Obx(
+                              () => Text(
+                            '${medicalController.count.value}',
+                    ),
                   ),
                 ),
+                  )
+                )
               ],
             ),
           ],
@@ -244,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 print(snapshot.error);
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return Center(child: Text('No Internet'));
               } else {
                 final userDetails = snapshot.data!;
                 return Column(
@@ -301,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: userDetails != null
+                                  child: userDetails.profilePic != null
                                       ? CircleAvatar(
                                           radius: 40,
                                           backgroundImage: NetworkImage(
@@ -455,6 +463,7 @@ class _BottomBarState extends State<BottomBar> {
   ];
 
   void _onItemTapped(int index) {
+    ApiService.getProfileDetails();
     setState(() {
       _selectedIndex = index;
     });

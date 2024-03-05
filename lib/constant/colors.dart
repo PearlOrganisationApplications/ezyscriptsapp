@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/cart_model.dart';
+import 'package:http/http.dart'as http;
+
+import '../repository/services/api_class.dart';
 class AppColors {
   static const primary = Color(0xFF1F2260);
   static const secondary = Color(0xFF484BB6);
@@ -25,5 +32,18 @@ Future<String> getToken() async {
 }
 String ?token;
 
-
+MyResponse ? myResponse;
+Future<void>getCartDetils()async{
+  final response=await http.get(Uri.parse(Api.getCartDetails),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    },
+  );
+  if(response.statusCode==200){
+    var result=jsonDecode(response.body);
+    print(result);
+    myResponse=MyResponse.fromJson(result);
+  }
+}
 

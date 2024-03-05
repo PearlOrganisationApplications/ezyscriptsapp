@@ -33,20 +33,24 @@ class MedicalCertificate extends StatelessWidget {
         itemCount: medicalDescription.length,
         itemBuilder: (context,index) {
           print(medicalDescription.length);
+          var medical=medicalPrices[index];
           return Padding(
             padding: const EdgeInsets.only(left: 12.0,right: 12),
             child: Card(
               child: Container(
-                child: Column(
-                  children: [
-                    Text(medicalDescriptionTitles[index],style: TextStyle(color: AppColors.primary,fontSize: 15,fontWeight: FontWeight.w700),),
-                    Divider(color: Colors.orange,indent: 30,endIndent: 30,),
-                    Text(medicalDescription[index]),
-                    CustomButton(text: buttonText, onPressed: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) =>
-                          MedicalDescription(text: medicalDescriptionTitles[index],),));
-                    },width: screenSize.width*.50,)
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(medicalDescriptionTitles[index],style: TextStyle(color: AppColors.primary,fontSize: 15,fontWeight: FontWeight.w700),),
+                      Divider(color: Colors.orange,indent: 30,endIndent: 30,),
+                      Text(medicalDescription[index]),
+                      CustomButton(text: buttonText, onPressed: (){
+                        Navigator.push(context,MaterialPageRoute(builder: (context) =>
+                            MedicalDescription(text: medicalDescriptionTitles[index], price: medical,),));
+                      },width: screenSize.width*.50,)
+                    ],
+                  ),
                 ),
               ),
             ),

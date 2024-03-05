@@ -1,4 +1,4 @@
-package com.example.ezyscripts
+package com.app.ezyscripts
 
 import io.flutter.embedding.android.FlutterActivity
 

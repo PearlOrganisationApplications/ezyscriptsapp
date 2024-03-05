@@ -1,49 +1,820 @@
+import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/constant/app_string.dart';
 import 'package:ezyscripts/constant/colors.dart';
+import 'package:ezyscripts/main.dart';
+import 'package:ezyscripts/screens/verify_details/verify_details_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../controller/totalprice controller.dart';
 
 
+class   CartScreen extends StatefulWidget {
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class _CartScreenState extends State<CartScreen> {
+  final RequestController priceController = Get.put(RequestController());
+  final MedicalController medicalController = Get.put(MedicalController());
+  final ConsulationController consulationController = Get.put(ConsulationController());
+   String?selectedOption;
+  int result=0;
+int consultPrice=30;
+bool isOrderSubscription=false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    priceController.addPrices();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(cart,style: TextStyle(color: AppColors.primary,fontSize: 20,fontWeight: FontWeight.w600),),
+        title: Text(cart, style: TextStyle(color: AppColors.primary,
+            fontSize: 20,
+            fontWeight: FontWeight.w600),),
       ),
-      body: Column(
+      body: ListView(
         children: [
-          productDetails(),
-          cartData()
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0,right: 8.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(width: 60,),
+                    Text('Product', style: TextStyle(
+                        fontSize: 10, fontWeight: FontWeight.w500),),
+                    SizedBox(width: 60,),
+                    Text('Price', style: TextStyle(
+                        fontSize: 10, fontWeight: FontWeight.w500),),
+                    SizedBox(width: 20,),
+                    Text('Quantity', style: TextStyle(
+                        fontSize: 10, fontWeight: FontWeight.w500),),
+                    SizedBox(width: 20,),
+
+
+                    Text('SubTotal', style: TextStyle(
+                        fontSize: 10, fontWeight: FontWeight.w500),)
+                  ],
+                ),
+                cartData(),
+                SizedBox(height: 20,),
+                 medicalCertificate(),
+                 myResponse!.consultationDetail.isNotEmpty?requestConsulation():Container(),
+                // specialistReferals(),
+                // bloodTest(),
+                subTotal(),
+
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
-  Widget productDetails(){
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Product'),
-          Text('Price'),
-          Text('Quantity'),
-          Text('SubTotal')
-        ],
-      ),
-    );
-  }
-  Widget cartData(){
+  Widget cartData() {
     return Container(
       child: ListView.builder(
         shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: myResponse!.scriptDetails.length,
         itemBuilder: (context, index) {
-        return Column(children: [
-          Text('Asghut')
-        ]
-        );
-      },),
+          var getCart = myResponse!.scriptDetails;
+          return Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${getCart[index].productName}',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Product ID: ${getCart[index].medicareCardNo}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        '${getCart[index].productPrice}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Ref No: ${getCart[index].refNo.toString()}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        'ConcCard num: ${getCart[index].concessionCardNo.toString()}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Card Color: ${getCart[index].cardColor}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        'Dva Num: ${getCart[index].dvaNo}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Chronic List: ${getCart[index].chronicDesc?.join(', ')}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
+Widget subTotal(){
+  var getCart = myResponse!.scriptDetails;
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      width: screenSize.width*1,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        Row(
+          children: [
+            Text('Enable Order Subscription',style: TextStyle(
+      fontSize: 15, fontWeight: FontWeight.w500,color: Colors.black),),
+            Checkbox(
+              value: isOrderSubscription,
+              onChanged: (newValue) {
+                setState(() {
+                  isOrderSubscription = newValue!;
+                });
+              },
+            )
+          ],
+        ),
+          isOrderSubscription?Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Renewal frequency',style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w500,color: Colors.black),),
+              SizedBox(width: 20,),
+              Text('every ',),
+              Column(
+                children: [
+                  DropdownButton<int>(
+                    items: List.generate(100, (index) => DropdownMenuItem<int>(
+                      value: index + 1,
+                      child: Text((index + 1).toString()),
+                    )),
+                    onChanged: (value) {
+                      // Handle the value change here
+                      print('Selected: $value');
+                    },
+                  ),
+                  DropdownButton<String>(
+                    value: selectedOption,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedOption = newValue;
+                      });
+                    },
+                    items: <String>['Day', 'Week','Month', 'Year']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+
+                ],
+              )
+            ],
+          ):Container(),
+          isOrderSubscription? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Number of installments'),
+              DropdownButton<int>(
+                items: List.generate(50, (index) {
+                  return DropdownMenuItem<int>(
+                    value: index + 1,
+                    child: Text('${index + 1} Installment'),
+                  );
+                }),
+                onChanged: (value) {
+                  // Handle the value change here
+                  print('Selected: $value');
+                },
+              )
+
+            ],
+          ):Container(),
+          SizedBox(height: 12,),
+          Text('CART TOTALS',style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w500,color: Colors.black),),
+          SizedBox(height: 14,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('SUBTOTAL',style: TextStyle(
+              fontSize: 15, fontWeight: FontWeight.w500),),
+              Text(getCart[0].productPrice,style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w500),)
+            ],
+          ),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('CONSULT FEES',style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w500),),
+              Text('\$${consultPrice.toString()}',style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w500),)
+            ],
+          ),
+          SizedBox(height: 20,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('TOTAL',style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w500),),
+              Obx(() => Text(
+                '\$${priceController.total.value}',
+                style: TextStyle(fontSize: 20),
+              )),
+            ],
+          ),
+          SizedBox(height: 10,),
+          CustomButton(text: 'Proceed to checkOut', onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context) => VerifyDetails(),));
+          },width: screenSize.width*.9,)
+        ],
+      ),
+    );
+}
+  Widget medicalCertificate() {
+    var medicalCertificates = myResponse!.certificateDetails;
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount:  medicalCertificates.length,
+      itemBuilder: (context, index) {
+        var certificateDetail = medicalCertificates[index];
+        return Card(
+          elevation: 4,
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Medical Certificate',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Divider(
+                  color: AppColors.primary,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Price: ${certificateDetail.price}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
+                      'Product: ${certificateDetail.medicareCardNo.toString()}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Price: ${certificateDetail.price}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Container(
+                      height: screenSize.height * 0.08,
+                      decoration: BoxDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              medicalController.increment();
+                              medicalController.incrementQuantityAndCalculatePrice();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey[200],
+                              ),
+                              child: Icon(Icons.add, size: 15),
+                            ),
+                          ),
+                          Obx(
+                                () => Text(
+                              '${medicalController.count.value}',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              medicalController.decrement();
+                              medicalController.decrementQuantityAndCalculatePrice();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey[200],
+                              ),
+                              child: Icon(Icons.remove, size: 15),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 4),
+                    Obx(
+                          () => Text(
+                        '\$${medicalController.total.value}',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Ref No: ${certificateDetail.refNo.toString()}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'ConcCard num: ${certificateDetail.concessionCardNo.toString()}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Card Color: ${certificateDetail.cardColor}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Dva Num: ${certificateDetail.dvaNo}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Title: ${certificateDetail.title}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+        );
+      },
+
+    );
+  }
+
+
+Widget requestConsulation(){
+    var coonsultationDetail=myResponse!.consultationDetail;
+    return  ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: coonsultationDetail.length,
+      itemBuilder: (context, index) {
+        var getCart = myResponse!.consultationDetail;
+        if (myResponse!.consultationDetail == null) {
+          return Center(
+            child: CircularProgressIndicator(),
+          ); // Return a placeholder text if _cardDetails is null
+        }
+        return Card(
+
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Request Consulation', style: TextStyle(color: AppColors.primary,
+                    fontSize: 15, fontWeight: FontWeight.w500),),
+                Divider(color: AppColors.primary,),
+                SizedBox(height: 10,),
+                Text('${consulationController.price}', style: TextStyle(
+                    fontSize: 10, fontWeight: FontWeight.w500),),
+                SizedBox(height: 20,),
+                Row(
+                  children: [
+                    Text('Product:${getCart[index].medicareCardNo.toString()}',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w500),),
+                    SizedBox(width: 20,),
+                    Text('${getCart[index].price}', style: TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w500),),
+                    SizedBox(width: 20),
+                    Container(
+                      height: screenSize.height * .09,
+                      decoration: BoxDecoration(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              consulationController.increment();
+                              consulationController.incrementQuantityAndCalculatePrice();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey[200],
+                              ),
+                              child: Icon(Icons.add, size: 15),
+                            ),
+                          ),
+                          Obx(() => Text(
+                            '${priceController.count.value}',
+                            style: TextStyle(fontSize: 20),
+                          )),
+                          GestureDetector(
+                            onTap: () {
+                              consulationController.decrement();
+                              consulationController.decrementQuantityAndCalculatePrice();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey[200],
+                              ),
+                              child: Icon(Icons.remove, size: 15),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Obx(() => Text(
+                      '\$${consulationController.total.value}',
+                      style: TextStyle(fontSize: 12),
+                    )),
+
+                  ],
+                ),
+                SizedBox(height: 20,),
+
+
+                Text('Ref No:${getCart[index].refNo.toString()}', style: TextStyle(
+                    fontSize: 15, fontWeight: FontWeight.w500),),
+                SizedBox(height: 20,),
+
+                Text('ConcCard num:${getCart[index].concessionCardNo.toString()}',
+                  style: TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w500),),
+                SizedBox(height: 20,),
+
+                Text('Card Color:${getCart[index].cardColor}', style: TextStyle(
+                    fontSize: 15, fontWeight: FontWeight.w500),),
+                SizedBox(height: 20,),
+
+                Text('Dva Num:${getCart[index].dvaNo}', style: TextStyle(
+                    fontSize: 15, fontWeight: FontWeight.w500),),
+                SizedBox(height: 20,),
+                Text('Chronic List: ${getCart[index].chronicDesc?.join(', ')}',
+                  style: TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w500),),
+                SizedBox(height: 20,),
+
+              ],
+            ),
+          ),
+        );
+      },);
+  }
+  // Widget specialistReferals(){
+  //   var medicalCertificates=myResponse!.certificateDetails;
+  //   return  Container(
+  //     height: screenSize.height*.50,
+  //     child: ListView.builder(
+  //       shrinkWrap: true,
+  //       itemCount: 1,
+  //       itemBuilder: (context, index) {
+  //         var getCart = myResponse!.scriptDetails;
+  //         if (myResponse!.scriptDetails == null) {
+  //           return Center(
+  //             child: CircularProgressIndicator(),
+  //           ); // Return a placeholder text if _cardDetails is null
+  //         }
+  //         return Card(
+  //
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(8.0),
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text('SpecialistReferals', style: TextStyle(color: AppColors.primary,
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 Divider(color: AppColors.primary,),
+  //                 SizedBox(height: 10,),
+  //                 Text('${medicalCertificates[index].productName}', style: TextStyle(
+  //                     fontSize: 10, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //                 Row(
+  //                   children: [
+  //                     Text('Product:${getCart[index].medicareCardNo.toString()}',
+  //                       style: TextStyle(
+  //                           fontSize: 15, fontWeight: FontWeight.w500),),
+  //                     SizedBox(width: 20,),
+  //                     Text('${getCart[index].productPrice}', style: TextStyle(
+  //                         fontSize: 15, fontWeight: FontWeight.w500),),
+  //                     SizedBox(width: 20),
+  //                     Container(
+  //                       height: screenSize.height * .09,
+  //                       decoration: BoxDecoration(),
+  //                       child: Row(
+  //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                         children: [
+  //                           GestureDetector(
+  //                             onTap: () {
+  //                               priceController.increment();
+  //                               priceController.incrementQuantityAndCalculatePrice();
+  //                             },
+  //                             child: Container(
+  //                               padding: EdgeInsets.all(8),
+  //                               decoration: BoxDecoration(
+  //                                 shape: BoxShape.circle,
+  //                                 color: Colors.grey[200],
+  //                               ),
+  //                               child: Icon(Icons.add, size: 15),
+  //                             ),
+  //                           ),
+  //                           Obx(() => Text(
+  //                             '${priceController.count.value}',
+  //                             style: TextStyle(fontSize: 20),
+  //                           )),
+  //                           GestureDetector(
+  //                             onTap: () {
+  //                               priceController.decrement();
+  //                               priceController.decrementQuantityAndCalculatePrice();
+  //                             },
+  //                             child: Container(
+  //                               padding: EdgeInsets.all(8),
+  //                               decoration: BoxDecoration(
+  //                                 shape: BoxShape.circle,
+  //                                 color: Colors.grey[200],
+  //                               ),
+  //                               child: Icon(Icons.remove, size: 15),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     SizedBox(width: 20),
+  //                     Obx(() => Text(
+  //                       '\$${priceController.total.value}',
+  //                       style: TextStyle(fontSize: 12),
+  //                     )),
+  //
+  //                   ],
+  //                 ),
+  //                 SizedBox(height: 20,),
+  //
+  //
+  //                 Text('Ref No:${getCart[index].refNo.toString()}', style: TextStyle(
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //                 Text('ConcCard num:${getCart[index].concessionCardNo.toString()}',
+  //                   style: TextStyle(
+  //                       fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //                 Text('Card Color:${getCart[index].cardColor}', style: TextStyle(
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //                 Text('Dva Num:${getCart[index].dvaNo}', style: TextStyle(
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //                 Text('Chronic List: ${getCart[index].chronicDesc?.join(', ')}',
+  //                   style: TextStyle(
+  //                       fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       },),
+  //   );
+  // }
+  // Widget bloodTest(){
+  //   var medicalCertificates=myResponse!.certificateDetails;
+  //   return  Container(
+  //     height: screenSize.height*.50,
+  //     child: ListView.builder(
+  //       shrinkWrap: true,
+  //       itemCount: 1,
+  //       itemBuilder: (context, index) {
+  //         var getCart = myResponse!.scriptDetails;
+  //         if (myResponse!.scriptDetails == null) {
+  //           return Center(
+  //             child: CircularProgressIndicator(),
+  //           ); // Return a placeholder text if _cardDetails is null
+  //         }
+  //         return Card(
+  //
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(8.0),
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text('BloodTest', style: TextStyle(color: AppColors.primary,
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 Divider(color: AppColors.primary,),
+  //                 SizedBox(height: 10,),
+  //                 Text('${medicalCertificates[index].productName}', style: TextStyle(
+  //                     fontSize: 10, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //                 Row(
+  //                   children: [
+  //                     Text('Product:${getCart[index].medicareCardNo.toString()}',
+  //                       style: TextStyle(
+  //                           fontSize: 15, fontWeight: FontWeight.w500),),
+  //                     SizedBox(width: 20,),
+  //                     Text('${getCart[index].productPrice}', style: TextStyle(
+  //                         fontSize: 15, fontWeight: FontWeight.w500),),
+  //                     SizedBox(width: 20),
+  //                     Container(
+  //                       height: screenSize.height * .09,
+  //                       decoration: BoxDecoration(),
+  //                       child: Row(
+  //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                         children: [
+  //                           GestureDetector(
+  //                             onTap: () {
+  //                               priceController.increment();
+  //                               priceController.incrementQuantityAndCalculatePrice();
+  //                             },
+  //                             child: Container(
+  //                               padding: EdgeInsets.all(8),
+  //                               decoration: BoxDecoration(
+  //                                 shape: BoxShape.circle,
+  //                                 color: Colors.grey[200],
+  //                               ),
+  //                               child: Icon(Icons.add, size: 15),
+  //                             ),
+  //                           ),
+  //                           Obx(() => Text(
+  //                             '${priceController.count.value}',
+  //                             style: TextStyle(fontSize: 20),
+  //                           )),
+  //                           GestureDetector(
+  //                             onTap: () {
+  //                               priceController.decrement();
+  //                               priceController.decrementQuantityAndCalculatePrice();
+  //                             },
+  //                             child: Container(
+  //                               padding: EdgeInsets.all(8),
+  //                               decoration: BoxDecoration(
+  //                                 shape: BoxShape.circle,
+  //                                 color: Colors.grey[200],
+  //                               ),
+  //                               child: Icon(Icons.remove, size: 15),
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     SizedBox(width: 20),
+  //                     Obx(() => Text(
+  //                       '\$${priceController.total.value}',
+  //                       style: TextStyle(fontSize: 12),
+  //                     )),
+  //
+  //                   ],
+  //                 ),
+  //                 SizedBox(height: 20,),
+  //
+  //
+  //                 Text('Ref No:${getCart[index].refNo.toString()}', style: TextStyle(
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //                 Text('ConcCard num:${getCart[index].concessionCardNo.toString()}',
+  //                   style: TextStyle(
+  //                       fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //                 Text('Card Color:${getCart[index].cardColor}', style: TextStyle(
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //                 Text('Dva Num:${getCart[index].dvaNo}', style: TextStyle(
+  //                     fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //                 Text('Chronic List: ${getCart[index].chronicDesc?.join(', ')}',
+  //                   style: TextStyle(
+  //                       fontSize: 15, fontWeight: FontWeight.w500),),
+  //                 SizedBox(height: 20,),
+  //
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       },),
+  //   );
+  // }
+
+
+
 }

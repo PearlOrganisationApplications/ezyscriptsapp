@@ -14,7 +14,7 @@ const leaveDes='Need to take a day off to care for an immediate family or househ
 const multipleDay='Multiple-Day Certificate';
 const multipleDayDes='If you need a medical certificate that covers several days, you will need to have a telehealth consultation with a doctor to discuss your needs. Please note, we cannot back date certificates';
 const costDescription='If approved by a doctor, your medical certificate will be sent to your email.The medical certificate will be issued for today only. If you require a medical certificate for multiple days in a row, you will require a telehealth consultation with one of our doctors.If you need to speak to a doctor about the right treatment for you or a child (under the age of 18), please request a Telehealth Consultation.';
-const costTitle='The cost of this referral is  ${40.00}';
+const costTitle='The cost of this referral is  ';
 const additionalInformation='Please provide additional information to help our doctors review your request. This will not appear on the Medical Certificate.';
 //Todo List of the HEADING
 
@@ -40,6 +40,34 @@ List<String>questions=[
   '5. I am currently located in Australia',
   '6. Do you understand everything that is written above or do you require assistance or language interpretation?'
 ];
+List<String> weightQuestions = [
+  "1. Are you aware that your doctor will advise you on the best treatment strategy for your individual circumstances and in some instances this may not involve medication?",
+  "2. Have you ever used medication for weight loss in the past?",
+  "3. Please be advised there is a national shortage of Ozempic medication. If eligible, our doctors may recommend an alternative treatment to Ozempic. Please do not book a telehealth consultation with us if you are seeking an Ozempic prescription. Do you acknowledge this?",
+  "4. If you have ever suffered from diseases with your pancreas, liver or kidney, you may be ineligible for the medication prescribed through our weight loss program. Are you still willing to proceed?",
+  "5. If you take insulin, you may be ineligible for the medication prescribed through our Weight Loss Program. Are you still willing to proceed with the weight loss consultation?",
+  "6. Have you ever had an allergic reaction to any medication?",
+  "7. Are you pregnant or are you actively trying to get pregnant now or in the next 6 months?",
+  "8. If you are a woman of reproductive age, will you be sure to use an appropriate method of contraception while on a weight loss program?",
+  "9. Have you ever been diagnosed with an eating disorder?",
+  "10. Do you consume more than 10 standard drinks of alcohol per week or more than 4 standard drinks on any one day?",
+  "11. Do you suffer from cardiovascular disease (e.g. heart disease, heart attack or irregular heartbeat), untreated high blood pressure, peripheral vascular disease, or have had a stroke?",
+  "12. Have you ever been diagnosed with severe heart failure?",
+  "13. Have you or anyone in your immediate family ever been diagnosed with medullary thyroid cancer?",
+  "14. Have you or anyone in your immediate family ever been diagnosed with Multiple Endocrine Neoplasia Syndrome 2 (MEN2)?",
+  "15. Have you ever had bariatric surgery (e.g. gastric band or gastric bypass)?",
+  "16. Do you suffer from a condition called gastroparesis or delayed gastric emptying?",
+  "17. Are you currently taking strong pain killers?",
+  "18. Do you have a known brain tumour?",
+  "19. Are taking medicines called monoamine oxidase inhibitors (MAOIs) or have taken them in the last 14 days?",
+  "20. Have you ever been diagnosed with bipolar disorder, major depression or experienced suicidal thinking?",
+  "21. Do you have epilepsy or a history of seizures?",
+  "22. Please upload a photo of yourself (selfie) holding a photo ID (a valid Passport or Licence).",
+  "23. Please upload a full-length photo of yourself for the doctor.",
+  "24. Do you understand everything that is written above or do you require assistance or language interpretation?",
+  "25. I am currently located in Australia"
+];
+
 
 //Todo request consultaion
 
@@ -51,7 +79,7 @@ const referal='Request A Referral';
 const otherCons='Other Consultations';
 
 //Todo other consulation
-
+List<String>generalConsulation=['General Consultation'];
 List<String>otherConsulationTitles=[
   'Mental Health Care Plan/Review',
   'COVID-19 Oral Antiviral Treatments',
@@ -115,6 +143,14 @@ List<String>colonoscopySubTitleList=[
   'For patients over 50 years of age with risk factors such as family history or bowel symptoms like rectal bleeding or altered bowel habit.',
   'For those patients that get a regular colonoscopy every 3-5 years as part of surveillance to check for polyps and bowel cancer.',
   'Request a telehealth consultation with one of our doctors and they can help you access a wide range of specialist referrals.'
+];
+
+List<String> specialistRefrelesQuestions = [
+  "1. Would you like to upload a photo of your acne before you proceed?",
+  "2. Have you already tried oral medication and/or topical treatments without success?",
+  "3. Are you currently pregnant or breast feeding?",
+  "4. I am currently located in Australia",
+  "5. Do you understand everything that is written above or do you require assistance or language interpretation?"
 ];
 
 //TODO BLOOD TEST
@@ -238,8 +274,30 @@ List<String> healthConditions = [
   "Ulcerative Colitis",
 ];
 
+List<String>pathologyConditions=[
+  "Full Blood Count (FBC)",
+  "Liver Function Tests (LFT)",
+  "TSH",
+  "Fasting Glucose",
+  "Low Density Lipoprotein (LDL)",
+  "High Density Lipoprotein (HDL)",
+  "Cholesterol",
+  "Triglycerides",
+  "Calcium, Magnesium, Phosphate",
+  "Vitamin D - not bulk billable (pathology labs charge approx. \$40)",
+  "Iron Studies",
+  "Electrolytes And Kidney Function",
+];
 
 //todo cart
 
 
 const cart='CART';
+
+
+List<int>medicalPrices=[
+  15,
+  40,
+  40,
+  20
+];

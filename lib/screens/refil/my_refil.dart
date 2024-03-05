@@ -100,40 +100,7 @@ class _RefilState extends State<Refil> {
               child: Text('Select Product',style: TextStyle(fontWeight: FontWeight.w700),)),
           SizedBox(height: 20,),
 
-          // Container(
-          //   width: screenSize.width*.95,
-          //   height: screenSize.height*.05,
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(20),
-          //     border: Border.all(color: Colors.black)
-          //   ),
-          //   child: DropdownButton(
-          //     borderRadius: BorderRadius.circular(20),
-          //     isExpanded:true ,
-          //    hint: Text('Select Post'),
-          //     // Initial Value
-          //     value: _selectedOption,
-          //
-          //     // Down Arrow Icon
-          //     icon: const Icon(Icons.keyboard_arrow_down),
-          //
-          //     // Array list of items
-          //     items: dropdownItems.map((String items) {
-          //       return DropdownMenuItem(
-          //         value: items,
-          //         child: Text(items,style: TextStyle(fontSize: 10),),
-          //       );
-          //     }).toList(),
-          //     // After selecting the desired option,it will
-          //     // change button value to selected value
-          //     onChanged: (String? newValue) {
-          //       setState(() {
-          //         _selectedOption = newValue!;
-          //       });
-          //     }
-          //
-          //   ),
-          // )
+
           DropdownSearch<String>(
             popupProps: PopupProps.menu(
               showSelectedItems: true,

@@ -18,7 +18,7 @@ class NetworkController extends GetxController {
           messageText: const Text(
               'PLEASE CONNECT TO THE INTERNET',
               style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontSize: 14
               )
           ),

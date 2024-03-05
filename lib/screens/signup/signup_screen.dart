@@ -239,7 +239,7 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                         ElevatedButton(
                           onPressed: _pickDocument,
                           style: ElevatedButton.styleFrom(
-                            primary: AppColors.primary,
+                            backgroundColor: AppColors.primary,
                           ),
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,

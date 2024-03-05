@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import '../../components/custombutton.dart';
 import '../../constant/colors.dart';
 import '../../main.dart';
-import '../document/description_screen/description_screen.dart';
+import '../medical_certificate/description_screen/description_screen.dart';
+import 'blood_description.dart';
+
 
 
 
@@ -15,18 +17,20 @@ class BloodTest extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('BLOOD TEST'),),
-      body:SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0,right: 18),
-          child: Column(
-            children: [
-              popularBloodTest(),
-              otherGeneralTest(),
-              woMenTest(),
-              menTests()
-            ],
+      body:ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0,right: 18),
+            child: Column(
+              children: [
+                popularBloodTest(),
+                otherGeneralTest(),
+                woMenTest(),
+                menTests()
+              ],
+            ),
           ),
-        ),
+        ],
       )
     );
   }
@@ -40,6 +44,8 @@ class BloodTest extends StatelessWidget {
           height: screenSize.height*.40,
           child: ListView.separated(
               shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index) => SizedBox(height: 10,),
               itemCount: bloodTestTitles.length,
               itemBuilder: (context,index) {
@@ -51,8 +57,9 @@ class BloodTest extends StatelessWidget {
                       Text(bloodTestSubtitle[index]),
                       SizedBox(height: 10,),
                       CustomButton(text: buttonText, onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: bloodTestTitles[index]),));
-                      },width: screenSize.width*.50,)
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => BloodTestDescription(text: bloodTestTitles[index], price: 15,),));
+                      }
+                      ,width: screenSize.width*.50,)
 
 
                     ],
@@ -74,6 +81,8 @@ class BloodTest extends StatelessWidget {
           height: screenSize.height*.40,
 
           child: ListView.separated(
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               separatorBuilder: (context, index) => SizedBox(height: 10,),
               itemCount: otherGeneralTestTitles.length,
@@ -86,7 +95,7 @@ class BloodTest extends StatelessWidget {
                       Text(otherGeneralTestSub[index]),
                       SizedBox(height: 10,),
                       CustomButton(text: buttonText, onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: otherConsulationTitles[index]),));
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => BloodTestDescription(text: otherConsulationTitles[index], price: 15,),));
                       },width: screenSize.width*.50,)
 
 
@@ -111,6 +120,8 @@ class BloodTest extends StatelessWidget {
           child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 30,),
               shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: womenTitles.length,
               itemBuilder: (context,index) {
                 return Padding(
@@ -123,7 +134,7 @@ class BloodTest extends StatelessWidget {
                           Divider(color: Colors.orange,indent: 30,endIndent: 30,),
                           Text(womenSubtitles[index]),
                           CustomButton(text: buttonText, onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: womenTitles[index]),));
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: womenTitles[index], price: 15,),));
                           },width: screenSize.width*.50,)
                         ],
                       ),
@@ -148,6 +159,8 @@ class BloodTest extends StatelessWidget {
           child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 30,),
               shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: menSubtitles.length,
               itemBuilder: (context,index) {
                 return Padding(
@@ -160,7 +173,7 @@ class BloodTest extends StatelessWidget {
                           Divider(color: Colors.orange,indent: 30,endIndent: 30,),
                           Text(menSubtitles[index]),
                           CustomButton(text: buttonText, onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: menTitles[index]),));
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: menTitles[index], price: 15,),));
                           },width: screenSize.width*.50,)
                         ],
                       ),

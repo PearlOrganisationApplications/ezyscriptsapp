@@ -1,14 +1,22 @@
 import 'dart:async';
 
+import 'package:country_picker/country_picker.dart';
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/screens/profile/profile_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:ezyscripts/screens/splash/splash_screen.dart';
 
+import 'controller/dependency.dart';
+import 'controller/totalprice controller.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  DependencyInjection.init();
   runApp(const MyApp());
 }
 
@@ -27,58 +35,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    ApiService.getProfileDetails();
+    // ApiService.getProfileDetails();
     getToken();
+
     super.initState();
-    subscription = Connectivity().onConnectivityChanged.listen((result) {
-      updateConnectionStatus(result);
-    });
-  }
 
-  @override
-  void dispose() {
-    subscription.cancel();
-    super.dispose();
   }
-
-  Future<void> updateConnectionStatus(ConnectivityResult result) async {
-    if (result != ConnectivityResult.wifi) {
-      setState(() async {
-        isDeviceConnected = await InternetConnectionChecker().hasConnection;
-        if (!isDeviceConnected) {
-          print('Not connected');
-          showDialogBox();
-        }
-      });
-    } else {
-      setState(() {
-        isDeviceConnected = false;
-        showDialogBox();
-      });
-    }
-  }
-
-  void showDialogBox() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text(
-          'No Connection',
-          style: TextStyle(color: Colors.black, fontSize: 30),
-        ),
-        content: const Text('Please check your internet connectivity'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
@@ -89,6 +51,39 @@ class _MyAppState extends State<MyApp> {
           iconTheme: IconThemeData(color: Colors.white),
         ),
       ),
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('ar'),
+        const Locale('es'),
+        const Locale('de'),
+        const Locale('fr'),
+        const Locale('el'),
+        const Locale('et'),
+        const Locale('nb'),
+        const Locale('nn'),
+        const Locale('pl'),
+        const Locale('pt'),
+        const Locale('ru'),
+        const Locale('hi'),
+        const Locale('ne'),
+        const Locale('uk'),
+        const Locale('hr'),
+        const Locale('tr'),
+        const Locale('lv'),
+        const Locale('lt'),
+        const Locale('ku'),
+        const Locale('nl'),
+        const Locale('it'),
+        const Locale('ko'),
+        const Locale('ja'),
+        const Locale('id'),
+        const Locale('cs'),
+        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'), // Generic Simplified Chinese 'zh_Hans'
+        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'), // Generic traditional Chinese 'zh_Hant'
+      ],
+      localizationsDelegates: [
+        CountryLocalizations.delegate,
+      ],
       home: SplashScreen(),
     );
   }

@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       var uri = Uri.parse(
           'https://test.pearl-developer.com/eazyscript/public/api/patient/update-user');
       var request = http.MultipartRequest('POST', uri);
-      request.headers['Authorization'] = 'Bearer $staticToken';
+      request.headers['Authorization'] = 'Bearer $token';
       request.files.add(
           await http.MultipartFile.fromPath('profile_pic', imageFile.path));
 
@@ -91,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
+                return Center(child: Text('No Internet'));
               } else {
                 final userDetails = snapshot.data!;
                 return SingleChildScrollView(
@@ -108,12 +108,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               CircleAvatar(
                                 radius: 52,
                                 child: ClipOval(
-                                  child: Image.network(
+                                  child: userDetails.profilePic!=null?Image.network(
                                     userDetails.profilePic,
                                     fit: BoxFit.cover,
                                     width: 102,
                                     height: 102,
-                                  ),
+                                  ):CircularProgressIndicator(),
                                 ),
                               ),
                               Positioned(

@@ -1,10 +1,12 @@
 import 'package:ezyscripts/constant/app_string.dart';
+import 'package:ezyscripts/screens/specialist_referals/specialist_referals_description.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/custombutton.dart';
 import '../../constant/colors.dart';
 import '../../main.dart';
-import '../document/description_screen/description_screen.dart';
+import '../bloodtest/blood_description.dart';
+
 
 
 
@@ -18,7 +20,7 @@ class ReferedSpecialist extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 18.0,right: 18),
-          child: Column(
+          child: ListView(
             children: [
               specilaistSkin(),
               eyeSpecialist(),
@@ -51,10 +53,8 @@ class ReferedSpecialist extends StatelessWidget {
                     Text(skinListSubtitles[index]),
                     SizedBox(height: 10,),
                     CustomButton(text: buttonText, onPressed: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: skinListTitles[index]),));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => SpecialistReferalsDescription(text: skinListTitles[index], price: 15,),));
                     },width: screenSize.width*.50,)
-
-
                   ],
                 ),
               );
@@ -86,7 +86,7 @@ class ReferedSpecialist extends StatelessWidget {
                       Text(eyesSubtitlesList[index]),
                       SizedBox(height: 10,),
                       CustomButton(text: buttonText, onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: eyesTitlesList[index],),));
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => SpecialistReferalsDescription(text: eyesTitlesList[index], price: 15,),));
                       },width: screenSize.width*.50,)
 
 
@@ -123,7 +123,7 @@ class ReferedSpecialist extends StatelessWidget {
                           Divider(color: Colors.orange,indent: 30,endIndent: 30,),
                           Text(colonoscopySubTitleList[index]),
                           CustomButton(text: buttonText, onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => MedicalDescription(text: colonoscopyTitleList[index]),));
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => SpecialistReferalsDescription(text: colonoscopyTitleList[index], price: 15,),));
                           },width: screenSize.width*.50,)
                         ],
                       ),
