@@ -1,277 +1,68 @@
 import 'package:ezyscripts/constant/colors.dart';
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RequestController extends GetxController {
-  final count = 1.obs;
-  final price=(int.tryParse(myResponse!.scriptDetails[0].productPrice.substring(1,)) ?? 0).obs;
-  void increment() {
-    count.value++;
-  }
-  void decrement() {
-    if (count.value > 1) {
-      count.value--;
-    }
-  }
+class RequestController extends ChangeNotifier {
+  final totalPriceCalculate=TotalPriceCalculate();
+  int totalPrice = 20;
+ List <String>? actualPrice;
   int quantity = 1;
-  int manualPrice = 30;
-  RxInt total = 0.obs;
+  List<int>inedx=[];
 
-  void addPrices() {
-    // Ensure myResponse and myResponse.scriptDetails are not null before accessing them
-    if (myResponse != null && myResponse!.scriptDetails != null) {
-      int totalPrice = 0;
-      for (var item in myResponse!.scriptDetails!) {
-        int productPrice = int.tryParse(item.productPrice.substring(1)) ?? 0;
-        print("API Product Price: $productPrice");
-        print("Manual Price: $manualPrice");
-        totalPrice += (productPrice * quantity); // Accumulate total price
-      }
-      total.value = totalPrice + manualPrice; // Update total price
-      print("Total Price: ${total.value}");
-    } else {
-
+  calculatePrice() {
+    for (var items in myResponse!.scriptDetails){
+      actualPrice!.add(items.productPrice);
+      print(actualPrice);
     }
+    // totalPrice = quantity * (actualPrice ?? 0);
+    allProductPrice=totalPrice;
+    totalPriceCalculate.updateTotalPrice();
+    totalQuantity.add(quantity);
+    notifyListeners();
   }
-  void incrementQuantityAndCalculatePrice() {
+  increment(){
+    totalQuantity.add(quantity);
     quantity++;
-    update();// Increment quantity
-    addPrices(); // Recalculate total price based on updated quantity
+    print(totalPrice);
+    calculatePrice();
+    notifyListeners();
   }
-
-  void decrementQuantityAndCalculatePrice() {
-    if (quantity > 1) {
+  decrement(){
+    totalQuantity.remove(quantity);
+    if(quantity>1){
       quantity--;
-     // Decrement quantity if greater than 1
-      addPrices(); // Recalculate total price based on updated quantity
+      calculatePrice();
+      print(totalPrice);
+      notifyListeners();
     }
 
-  }
-  void subtotalPrice() {
-    price.value = price.value * count.value;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
   }
 }
-class MedicalController extends GetxController {
-  final count = 1.obs;
-  final price=(int.tryParse(myResponse!.certificateDetails[0].price.substring(1,)) ?? 0).obs;
-  void increment() {
-    count.value++;
-  }
 
-  void decrement() {
-    if (count.value > 1) {
-      count.value--;
-    }
-  }
-  int quantity = 1;
-  int manualPrice = 30;
-  RxInt total = 0.obs;
 
-  void addPrices() {
-    // Ensure myResponse and myResponse.scriptDetails are not null before accessing them
-    if (myResponse != null && myResponse!.certificateDetails != null) {
-      int totalPrice = 0;
-      for (var item in myResponse!.certificateDetails!) {
-        int productPrice = int.tryParse(item.price.substring(1)) ?? 0;
-        print("API Product Price: $productPrice");
-        print("Manual Price: $manualPrice");
-        totalPrice += (productPrice * quantity); // Accumulate total price
-      }
-      total.value = totalPrice + manualPrice; // Update total price
-      print("Total Price: ${total.value}");
-    } else {
-      print("myResponse or myResponse.scriptDetails is null");
-    }
-  }
-  void incrementQuantityAndCalculatePrice() {
-    quantity++;
-    update();// Increment quantity
-    addPrices(); // Recalculate total price based on updated quantity
-  }
+List<int>totalQuantity=[];
 
-  void decrementQuantityAndCalculatePrice() {
-    if (quantity > 1) {
-      quantity--;
-     // Decrement quantity if greater than 1
-      addPrices(); // Recalculate total price based on updated quantity
-    }
-
-  }
-  void subtotalPrice() {
-    price.value = price.value * count.value;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
+int allProductPrice=0;
+class TotalPriceCalculate extends ChangeNotifier{
+  int totalPriceOfTheProducts = 0;
+  List<int> total = [];
+  void updateTotalPrice()async {
+    totalPriceOfTheProducts = allProductPrice;
+    print(totalPriceOfTheProducts);
+    print(total.length);
+    total = List.from(totalQuantity);
+    notifyListeners();
   }
 }
-class ConsulationController extends GetxController {
-  final count = 1.obs;
-  final price=(int.tryParse(myResponse!.scriptDetails[0].productPrice.substring(1,)) ?? 0).obs;
-  void increment() {
-    count.value++;
-  }
 
-  void decrement() {
-    if (count.value > 1) {
-      count.value--;
-    }
-  }
-  int quantity = 1;
-  int manualPrice = 30;
-  RxInt total = 0.obs;
-
-  void addPrices() {
-    // Ensure myResponse and myResponse.scriptDetails are not null before accessing them
-    if (myResponse != null && myResponse!.consultationDetail != null) {
-      int totalPrice = 0;
-      for (var item in myResponse!.consultationDetail!) {
-        int productPrice = int.tryParse(item.price.substring(1)) ?? 0;
-        print("API Product Price: $productPrice");
-        print("Manual Price: $manualPrice");
-        totalPrice += (productPrice * quantity); // Accumulate total price
-      }
-      total.value = totalPrice + manualPrice; // Update total price
-      print("Total Price: ${total.value}");
-    } else {
-      print("myResponse or myResponse.scriptDetails is null");
-    }
-  }
-  void incrementQuantityAndCalculatePrice() {
-    quantity++;
-    update();// Increment quantity
-    addPrices(); // Recalculate total price based on updated quantity
-  }
-
-  void decrementQuantityAndCalculatePrice() {
-    if (quantity > 1) {
-      quantity--;
-     // Decrement quantity if greater than 1
-      addPrices(); // Recalculate total price based on updated quantity
-    }
-
-  }
-  void subtotalPrice() {
-    price.value = price.value * count.value;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
+Future<void> saveTotalProducts() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('totalProducts', totalQuantity.length);
 }
-class SpecialistController extends GetxController {
-  final count = 1.obs;
-  final price=(int.tryParse(myResponse!.scriptDetails[0].productPrice.substring(1,)) ?? 0).obs;
-  void increment() {
-    count.value++;
-  }
-
-  void decrement() {
-    if (count.value > 1) {
-      count.value--;
-    }
-  }
-  int quantity = 1;
-  int manualPrice = 30;
-  RxInt total = 0.obs;
-
-  void addPrices() {
-    // Ensure myResponse and myResponse.scriptDetails are not null before accessing them
-    if (myResponse != null && myResponse!.scriptDetails != null) {
-      int totalPrice = 0;
-      for (var item in myResponse!.scriptDetails!) {
-        int productPrice = int.tryParse(item.productPrice.substring(1)) ?? 0;
-        print("API Product Price: $productPrice");
-        print("Manual Price: $manualPrice");
-        totalPrice += (productPrice * quantity); // Accumulate total price
-      }
-      total.value = totalPrice + manualPrice; // Update total price
-      print("Total Price: ${total.value}");
-    } else {
-      print("myResponse or myResponse.scriptDetails is null");
-    }
-  }
-  void incrementQuantityAndCalculatePrice() {
-    quantity++;
-    update();// Increment quantity
-    addPrices(); // Recalculate total price based on updated quantity
-  }
-
-  void decrementQuantityAndCalculatePrice() {
-    if (quantity > 1) {
-      quantity--;
-     // Decrement quantity if greater than 1
-      addPrices(); // Recalculate total price based on updated quantity
-    }
-
-  }
-  void subtotalPrice() {
-    price.value = price.value * count.value;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
+Future<int?> getTotalProducts() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  totalProductQuantity=prefs.getInt('totalProducts')!;
+  return totalProductQuantity;
 }
-class BloodController extends GetxController {
-  final count = 1.obs;
-  final price=(int.tryParse(myResponse!.scriptDetails[0].productPrice.substring(1,)) ?? 0).obs;
-  void increment() {
-    count.value++;
-  }
 
-  void decrement() {
-    if (count.value > 1) {
-      count.value--;
-    }
-  }
-  int quantity = 1;
-  int manualPrice = 30;
-  RxInt total = 0.obs;
-
-  void addPrices() {
-    // Ensure myResponse and myResponse.scriptDetails are not null before accessing them
-    if (myResponse != null && myResponse!.scriptDetails != null) {
-      int totalPrice = 0;
-      for (var item in myResponse!.scriptDetails!) {
-        int productPrice = int.tryParse(item.productPrice.substring(1)) ?? 0;
-        print("API Product Price: $productPrice");
-        print("Manual Price: $manualPrice");
-        totalPrice += (productPrice * quantity); // Accumulate total price
-      }
-      total.value = totalPrice + manualPrice; // Update total price
-      print("Total Price: ${total.value}");
-    } else {
-      print("myResponse or myResponse.scriptDetails is null");
-    }
-  }
-  void incrementQuantityAndCalculatePrice() {
-    quantity++;
-    update();// Increment quantity
-    addPrices(); // Recalculate total price based on updated quantity
-  }
-
-  void decrementQuantityAndCalculatePrice() {
-    if (quantity > 1) {
-      quantity--;
-     // Decrement quantity if greater than 1
-      addPrices(); // Recalculate total price based on updated quantity
-    }
-
-  }
-  void subtotalPrice() {
-    price.value = price.value * count.value;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-}
+int totalProductQuantity=0;

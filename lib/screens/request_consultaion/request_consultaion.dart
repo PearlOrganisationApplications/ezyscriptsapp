@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../components/custombutton.dart';
 import '../../main.dart';
-import '../medical_certificate/description_screen/description_screen.dart';
 import '_description.dart';
 
 

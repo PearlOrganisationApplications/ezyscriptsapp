@@ -3,6 +3,7 @@ import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/colors.dart';
+import '../../controller/totalprice controller.dart';
 import '../onboarding/onboarding_screen.dart';
 class SplashScreen extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     getToken();
+    getTotalProducts();
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(

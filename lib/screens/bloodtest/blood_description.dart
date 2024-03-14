@@ -4,9 +4,7 @@ import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/constant/app_string.dart';
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
@@ -73,11 +71,22 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           noChronicConditions(),
           chronicList(),
           pathologyTest(),
-          questionsList(),
+          widget.text=='General Health Blood Test'?generalHealthQuestionsList():Container(),
+          widget.text=='STI Blood Test'?stibloodQuestions():Container(),
+          widget.text=='Vegan Blood Test'?veganBloodTest():Container(),
+          widget.text=='Why Am I Sick All The Time? Blood Test'?whyiamSickQuestionList():Container(),
+          widget.text=='Why Am I Tired? Blood Test'?whyiamtiredQuestionList():Container(),
+          widget.text=='Irritable Bowel Test'?irritableBloodTestQuestionsList():Container(),
+          widget.text=='Food Intolerance Breath Test'?foodIntolrenceBloodTest():Container(),
+          widget.text=='COVID PCR Test'?covidPcrTestQuestions():Container(),
+          widget.text=='Polycystic Ovarian Syndrome (PCOS) Risk Blood Test'?polysticOverianQuestionList():Container(),
+          widget.text=='Pregnancy Blood Test'?pregencyBloodTestQuestionList():Container(),
+          widget.text=='Pregnancy Planning Blood Test'?pregnancyPlanningQuestionList():Container(),
+          widget.text=='Erectile Dysfunction Blood Test'?menFertilityTest():Container(),
           CustomButton(
             text: 'Add To Card',
             onPressed: () {
-              requestConsulation();
+              bloodConsulation();
               // Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
             },
             width: screenSize.width * .35,
@@ -480,7 +489,7 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
     );
   }
 
-  Widget questionsList() {
+  Widget generalHealthQuestionsList() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Column(
@@ -497,7 +506,7 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        specialistRefrelesQuestions[index],
+                        generalHealthBloodTestQuestion[index],
                         style: TextStyle(color: Colors.black),
                       ),
                       Row(
@@ -534,7 +543,727 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
                   );
                 },
                 separatorBuilder: (context, index) => SizedBox(height: 10),
-                itemCount: specialistRefrelesQuestions.length),
+                itemCount: generalHealthBloodTestQuestion.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget stibloodQuestions() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        stiBloodTestQuestionList[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: stiBloodTestQuestionList.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget veganBloodTest() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        veganBloodTestQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: veganBloodTestQuestions.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget whyiamSickQuestionList() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        whyIamSickListQuestion[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: whyIamSickListQuestion.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget whyiamtiredQuestionList() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        whyIamTiredList[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: whyIamTiredList.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget irritableBloodTestQuestionsList() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        irritableBowlTestQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: irritableBowlTestQuestions.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget foodIntolrenceBloodTest() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        foodBreathTestQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: foodBreathTestQuestions.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget covidPcrTestQuestions() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        covidPcrTestQuestion[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: covidPcrTestQuestion.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget polysticOverianQuestionList() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        polysticOverianQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: polysticOverianQuestions.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget womenFertilityQuestionsList() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        womenFertility[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: womenFertility.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget pregencyBloodTestQuestionList() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pregenecyBloodTestQuestion[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: pregenecyBloodTestQuestion.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget pregnancyPlanningQuestionList() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pregencyPlannigTestList[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: pregencyPlannigTestList.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget menFertilityTest() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        erecetileDysfunctionBloodQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: erecetileDysfunctionBloodQuestions.length),
           ),
         ],
       ),
@@ -557,7 +1286,7 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
       });
   }
 
-  Future<void> requestConsulation() async {
+  Future<void> bloodConsulation() async {
     print(widget.text != "Multiple-Day Certificate"
         ? widget.text.split(' ').last
         : "Multiple-Day");
@@ -565,7 +1294,7 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
       // Convert the text from dobController to a DateTime object
       DateTime? dob = DateFormat('yyyy-MM-dd').parse(dobController.text);
       final response = await http.post(
-        Uri.parse(Api.requestConsulation),
+        Uri.parse(Api.blood),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',

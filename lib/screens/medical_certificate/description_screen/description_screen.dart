@@ -4,14 +4,10 @@ import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/constant/app_string.dart';
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
-import '../../../repository/home_repository/repository.dart';
 import '../../../repository/services/api_class.dart';
 import '../../cart/cart_screen.dart';
 

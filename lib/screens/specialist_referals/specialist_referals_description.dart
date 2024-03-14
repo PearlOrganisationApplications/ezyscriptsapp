@@ -4,9 +4,7 @@ import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/constant/app_string.dart';
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
@@ -72,11 +70,21 @@ class _SpecialistReferalsDescriptionState extends State<SpecialistReferalsDescri
             medicalHistory(),
             noChronicConditions(),
             chronicList(),
-         // widget.text=='Can?T Find What You Need?' ?  questionsList():Container(),
+          widget.text=='Dermatology Referral For Acne'? questionsList():Container(),
+          widget.text=='Gastroenterology (Colonoscopy) Referral For 3?5-Year Follow-Up'? referralFor3Year():Container(),
+
+          widget.text=='Dermatology Referral For General Skin/Mole Check'? referalsForGeneralSkin():Container(),
+          widget.text=='Ophthalmologist Referral For Age-Related Macular Degeneration'? referlasForgaeRelated():Container(),
+          widget.text=='Ophthalmologist Referral For Age-Related Macular Degeneration'&&
+              widget.text=='Ophthalmologist Referral For Cataracts'&& widget.text=='Ophthalmologist Referral For Diabetes'&&
+              widget.text=='Ophthalmologist Referral For Glaucoma'
+              ? referlasForgaeRelated():Container(),
+            widget.text=='Gastroenterology (Colonoscopy) Referral For Initial Screen'? referalsForInitialScreenQuestions():Container(),
+
             CustomButton(
               text: 'Add To Card',
               onPressed: () {
-                requestConsulation();
+               specilistReferals();
               },
               width: screenSize.width * .35,
             )
@@ -544,6 +552,270 @@ class _SpecialistReferalsDescriptionState extends State<SpecialistReferalsDescri
       ),
     );
   }
+  Widget referalsForGeneralSkin() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('REQUEST DETAILS',style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w500),),
+          SizedBox(height: 10,),
+          Text('If you have a particular doctor you would like the referral addressed to, please enter their name below (optional)',style: TextStyle(color: Colors.black,fontSize: 13,fontWeight: FontWeight.w500),),
+        SizedBox(height: 10,),
+          CustomTextFormField(labelText: 'Doctor', controller: mobileController),
+          SizedBox(height: 10,),
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        referalsForgeneralSkinQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: referalsForgeneralSkinQuestions.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget referlasForgaeRelated() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('REQUEST DETAILS',style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w500),),
+          SizedBox(height: 10,),
+          Text('If you have a particular doctor you would like the referral addressed to, please enter their name below (optional)',style: TextStyle(color: Colors.black,fontSize: 13,fontWeight: FontWeight.w500),),
+        SizedBox(height: 10,),
+          CustomTextFormField(labelText: 'Doctor', controller: mobileController),
+          SizedBox(height: 10,),
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        referlasForAgeRelatedQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: referlasForAgeRelatedQuestions.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget referalsForInitialScreenQuestions() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('REQUEST DETAILS',style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w500),),
+          SizedBox(height: 10,),
+          Text('If you have a particular doctor you would like the referral addressed to, please enter their name below (optional)',style: TextStyle(color: Colors.black,fontSize: 13,fontWeight: FontWeight.w500),),
+        SizedBox(height: 10,),
+          CustomTextFormField(labelText: 'Doctor', controller: mobileController),
+          SizedBox(height: 10,),
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        initialScreenQuestions[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: initialScreenQuestions.length),
+          ),
+        ],
+      ),
+    );
+  }
+  Widget referralFor3Year() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('REQUEST DETAILS',style: TextStyle(color: Colors.black,fontSize: 20,fontWeight: FontWeight.w500),),
+          SizedBox(height: 10,),
+          Text('If you have a particular doctor you would like the referral addressed to, please enter their name below (optional)',style: TextStyle(color: Colors.black,fontSize: 13,fontWeight: FontWeight.w500),),
+        SizedBox(height: 10,),
+          CustomTextFormField(labelText: 'Doctor', controller: mobileController),
+          SizedBox(height: 10,),
+          Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
+          SizedBox(height: 13,),
+          Container(
+            height: screenSize.height * .45,
+            child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        referalsfor3Year[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'Yes',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('Yes')
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio<String>(
+                            value: 'No',
+                            groupValue: answers[index],
+                            onChanged: (value) {
+                              setState(() {
+                                answers[index] = value!;
+                              });
+                            },
+                          ),
+                          Text('No')
+                        ],
+                      )
+                    ],
+                  );
+                },
+                separatorBuilder: (context, index) => SizedBox(height: 10),
+                itemCount: referalsfor3Year.length),
+          ),
+        ],
+      ),
+    );
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -561,7 +833,7 @@ class _SpecialistReferalsDescriptionState extends State<SpecialistReferalsDescri
       });
   }
 
-  Future<void> requestConsulation() async {
+  Future<void> specilistReferals() async {
     print(widget.text != "Multiple-Day Certificate"
         ? widget.text.split(' ').last
         : "Multiple-Day");
@@ -569,7 +841,7 @@ class _SpecialistReferalsDescriptionState extends State<SpecialistReferalsDescri
       // Convert the text from dobController to a DateTime object
       DateTime? dob = DateFormat('yyyy-MM-dd').parse(dobController.text);
       final response = await http.post(
-        Uri.parse(Api.requestConsulation),
+        Uri.parse(Api.referals),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',

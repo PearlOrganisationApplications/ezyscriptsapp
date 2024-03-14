@@ -10,8 +10,7 @@ import 'blood_description.dart';
 
 
 
-class BloodTest extends StatelessWidget {
-  const BloodTest({super.key});
+class BloodTestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,6 @@ class BloodTest extends StatelessWidget {
         Text(popular,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w600),),
         Divider(color: Colors.black),
         Container(
-          height: screenSize.height*.40,
           child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
@@ -78,7 +76,6 @@ class BloodTest extends StatelessWidget {
         Text(otherGeneral,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w600),),
         Divider(color: Colors.black),
         Container(
-          height: screenSize.height*.40,
 
           child: ListView.separated(
               scrollDirection: Axis.vertical,
@@ -90,12 +87,12 @@ class BloodTest extends StatelessWidget {
                 return Card(
                   child: Column(
                     children: [
-                      Text(otherConsulationTitles[index],style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w300),),
+                      Text(otherGeneralTestTitles[index],style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w300),),
                       Divider(color: Colors.orange,indent: 20,endIndent: 20,),
                       Text(otherGeneralTestSub[index]),
                       SizedBox(height: 10,),
                       CustomButton(text: buttonText, onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => BloodTestDescription(text: otherConsulationTitles[index], price: 15,),));
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => BloodTestDescription(text: otherGeneralTestTitles[index], price: 15,),));
                       },width: screenSize.width*.50,)
 
 
@@ -115,7 +112,6 @@ class BloodTest extends StatelessWidget {
         Text(womenTest,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w600),),
         Divider(color: Colors.black),
         Container(
-          height: screenSize.height*.40,
 
           child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 30,),
@@ -154,7 +150,6 @@ class BloodTest extends StatelessWidget {
         Text(menTest,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w600),),
         Divider(color: Colors.black),
         Container(
-          height: screenSize.height*.40,
 
           child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 30,),
@@ -169,7 +164,7 @@ class BloodTest extends StatelessWidget {
                     child: Container(
                       child: Column(
                         children: [
-                          Text(menSubtitles[index],style: TextStyle(color: AppColors.primary,fontSize: 15,fontWeight: FontWeight.w700),),
+                          Text(menTitles[index],style: TextStyle(color: AppColors.primary,fontSize: 15,fontWeight: FontWeight.w700),),
                           Divider(color: Colors.orange,indent: 30,endIndent: 30,),
                           Text(menSubtitles[index]),
                           CustomButton(text: buttonText, onPressed: (){

@@ -1,15 +1,15 @@
+import 'package:ezyscripts/controller/totalprice%20controller.dart';
 import 'package:ezyscripts/screens/bloodtest/blood_test.dart';
 import 'package:ezyscripts/screens/cart/cart_screen.dart';
 import 'package:ezyscripts/screens/refil/step1/step1_screen.dart';
 import 'package:ezyscripts/screens/specialist_referals/specialist_referals.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../constant/colors.dart';
-import '../../controller/totalprice controller.dart';
 import '../../database/data_helper.dart';
 import '../about_us/about_us.dart';
 import '../contact_us/contact_us.dart';
+import '../drawer/drawer.dart';
 import '../medical_certificate/my_document.dart';
 import '../profile/profile_api.dart';
 import '../profile/profile_screen.dart';
@@ -23,17 +23,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final MedicalController medicalController = Get.put(MedicalController());
   late Future<UserDetails> _userDetails;
   late Image image;
   final dbHelper = DBHelper.instance;
+  final totalprice=TotalPriceCalculate();
 
   @override
   void initState() {
     super.initState();
     _userDetails = ApiService.getProfileDetails();
+    totalprice.updateTotalPrice();
   }
-
   void _insert() async {
     Map<String, dynamic> row = {
       'name': 'John Doe',
@@ -47,160 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Map<String, dynamic>> result = await dbHelper.queryAll();
     print('Query result: $result');
   }
- void totalQuantity(){}
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                ),
-                child: Image.asset("assets/images/EzyScript1-155x108.png"),
-              ),
-              const ListTile(
-                title: Text('Home'),
-              ),
-              const ExpansionTile(
-                title: Text('What we treat'),
-                trailing: Icon(Icons.arrow_drop_down_sharp),
-                children: [
-                  ListTile(
-                    title: Text(
-                      'Weight  loss kit',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Unlock your potential, shed those extra pounds, and embrace a fitter, more '
-                        'confident you with our Weight Loss Kit. Start your transformation today!'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Request a scripts',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Accessing prescriptions for everyday medications, speaking to a doctor, obtaining a medical certificate , getting blood test requests or '
-                        'referrals are just some of the online services offered by Ezyscripts.'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Telehealth consulations',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Speak to a doctor from anywhere in Australia between 6am and '
-                        'midnight and get the medical help you need quickly and conveniently.'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Medical certifiactes',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Need a medical certificate in minutes? With EzyScripts you can get'
-                        ' a medical certificate from the comfort of your home'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Speacilist referals',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Do you need a referral to a specialist doctor? If you need to see a specialist '
-                        'we can help you access referrals from the comfort of home.'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Blood test',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Examines a range of cells, nutrients, hormones and organ function '
-                        'indicators in your associated with general health and wellness'),
-                  ),
-                ],
-              ),
-              const ExpansionTile(
-                title: Text('About us'),
-                trailing: Icon(Icons.arrow_drop_down_sharp),
-                children: [
-                  ListTile(
-                    title: Text(
-                      'Our Story',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'We aspire to be the leading healthcare platform in Australia, revolutionizing '
-                        'the way healthcare is delivered. Our commitment is to make'
-                        ' healthcare more accessible and convenient, improving the lives of millions'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Our Team',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Discover the skilled and caring individuals shaping EzyScripts success.'
-                        ' Meet our team of experienced pharmacists and professionals'
-                        ' committed to delivering top-quality healthcare services.'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Patients safety',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'Ezyscripts integrates cutting-edge technologies facilitating online doctor consultations, e-prescriptions, and secure medication delivery. Our platform harnesses the latest advancements to ensure a seamless '
-                        'and efficient healthcare experience for users, '
-                        'embracing innovation at every step.'),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Privacy Policy',
-                      style: TextStyle(color: AppColors.primary),
-                    ),
-                    subtitle: Text(
-                        'We respect your rights to privacy and are very conscious of the provisions of the Privacy Act 1988 (Cth) (Privacy Act). The Privacy Act contains the Australian Privacy Principles (APPs) which cover areas including the collection, use, disclosure, quality and security of personal information.'
-                        ' We are also conscious of the relevant health privacy '
-                        'principles under State and Territory legislation.'),
-                  ),
-                ],
-              ),
-              const ListTile(
-                title: Text('News'),
-              ),
-              const ListTile(
-                title: Text('Book an apointment'),
-              ),
-              const ListTile(
-                title: Text('FAQ'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(48.0),
-                child: InkWell(
-                  onTap: () async {
-
-                  },
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: 20,
-                      height: 50,
-                      color: AppColors.primary,
-                      child: Text(
-                        'Log out',
-                        style: TextStyle(color: Colors.white),
-                      )),
-                ),
-              )
-            ],
-          ),
-        ),
+        drawer: CDrawer(),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: AppColors.primary,
@@ -214,8 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(
                   onPressed: () async{
                     getCartDetils();
-                    await Future.delayed(Duration(seconds: 3));
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
+
+                      await Future.delayed(Duration(seconds: 3));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));
                   },
                   icon: const Icon(
                     Icons.shopping_cart_rounded,
@@ -233,14 +87,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.grey,
                     ),
                     child:  Center(
-                        child:   Obx(
-                              () => Text(
-                            '${medicalController.count.value}',
+                        child: Text(
+                          totalProductQuantity.toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                     ),
                   ),
                 ),
-                  )
-                )
               ],
             ),
           ],
@@ -248,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: FutureBuilder<UserDetails>(
             future: _userDetails,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.none) {
+              if (snapshot.connectionState == ConnectionState.waiting ) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 print(snapshot.error);
@@ -365,7 +221,7 @@ class GridItem extends StatelessWidget {
     MedicalCertificate(),
     RequestConsultaion(),
     ReferedSpecialist(),
-    BloodTest()
+    BloodTestScreen()
   ];
 
   final List<Map<String, String>> dataList = [

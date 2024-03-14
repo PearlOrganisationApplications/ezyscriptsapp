@@ -4,13 +4,10 @@ import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/screens/refil/step1/step3_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart'as http;
 
 import '../../components/percentindicator.dart';
 import '../../components/toast.dart';
-import '../../constant/colors.dart';
 import '../../main.dart';
-import '../../repository/services/api_class.dart';
 
 class Refil extends StatefulWidget {
   const Refil({super.key});
@@ -132,9 +129,9 @@ class _RefilState extends State<Refil> {
         SizedBox(width: 15,),
         CustomButton(text: 'Next', onPressed: (){
           _selectedOption==null?CustomToast.showToast('Please select the post'):Navigator.push(context, MaterialPageRoute(builder: (context) => Step3(productName:_selectedOption.toString() ),));
-        },width: screenSize.width*0.34,),
+        },
+          width: screenSize.width*0.34,),
       ],
     );
   }
-
 }

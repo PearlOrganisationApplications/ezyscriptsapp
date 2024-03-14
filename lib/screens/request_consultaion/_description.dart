@@ -4,9 +4,7 @@ import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/constant/app_string.dart';
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
@@ -80,7 +78,7 @@ class _RequestConsulationDescriptionState extends State<RequestConsulationDescri
                 text: 'Add To Card',
                 onPressed: () {
                   requestConsulation();
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
+                   // Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
                 },
                 width: screenSize.width * .35,
               )
@@ -299,8 +297,8 @@ class _RequestConsulationDescriptionState extends State<RequestConsulationDescri
               ),
               CustomTextFormField(
                   labelText:
-                  'Please list any allergies medication you are currently talking',
-                  controller: specifyAlergiesController)
+                  'Please list any  medication you are currently talking',
+                  controller: specifyMediationsController)
             ],
           ),
         ],
@@ -606,7 +604,7 @@ class _RequestConsulationDescriptionState extends State<RequestConsulationDescri
           "chronic_desc":
           isChronoicConditions ? [] : selectedHealthConditions.toList(),
           "title": widget.text != "Multiple-Day Certificate"
-              ? widget.text.split(' ').last
+              ? widget.text.split(' ').first
               : "Multiple-Day",
           "dmc": answers.values.toList(),
           'request_reason': controller1.text

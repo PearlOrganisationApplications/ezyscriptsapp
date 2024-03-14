@@ -34,6 +34,7 @@ String ?token;
 
 MyResponse ? myResponse;
 Future<void>getCartDetils()async{
+
   final response=await http.get(Uri.parse(Api.getCartDetails),
     headers: {
       'Authorization': 'Bearer $token',
@@ -44,6 +45,9 @@ Future<void>getCartDetils()async{
     var result=jsonDecode(response.body);
     print(result);
     myResponse=MyResponse.fromJson(result);
+  }
+  else{
+    print(response.body);
   }
 }
 

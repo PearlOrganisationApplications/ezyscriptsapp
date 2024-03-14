@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../components/custombutton.dart';
 import '../../constant/colors.dart';
 import '../../main.dart';
-import '../bloodtest/blood_description.dart';
 
 
 
@@ -17,19 +16,20 @@ class ReferedSpecialist extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18.0,right: 18),
-          child: ListView(
-            children: [
-              specilaistSkin(),
-              eyeSpecialist(),
-              colonscopySpecilaist()
-            ],
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0,right: 18),
+            child: Column(
+              children: [
+                specilaistSkin(),
+                eyeSpecialist(),
+                colonscopySpecilaist()
+              ],
+            ),
           ),
-        ),
+        ],
       ),
-
     );
   }
   Widget specilaistSkin(){
@@ -39,9 +39,10 @@ class ReferedSpecialist extends StatelessWidget {
         Text(skin,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w600),),
         Divider(color: Colors.black),
         Container(
-          height: screenSize.height*.40,
           child: ListView.separated(
             shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
             separatorBuilder: (context, index) => SizedBox(height: 10,),
             itemCount: skinListTitles.length,
             itemBuilder: (context,index) {
@@ -71,10 +72,11 @@ class ReferedSpecialist extends StatelessWidget {
         Text(eyes,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w600),),
         Divider(color: Colors.black),
         Container(
-          height: screenSize.height*.40,
 
           child: ListView.separated(
             shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index) => SizedBox(height: 10,),
               itemCount: eyesSubtitlesList.length,
               itemBuilder: (context,index) {
@@ -106,11 +108,11 @@ class ReferedSpecialist extends StatelessWidget {
         Text(colonosopy,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w600),),
         Divider(color: Colors.black),
         Container(
-          height: screenSize.height*.40,
-
           child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(height: 30,),
               shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: colonoscopySubTitleList.length,
               itemBuilder: (context,index) {
                 return Padding(

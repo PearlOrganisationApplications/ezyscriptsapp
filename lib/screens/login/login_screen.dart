@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/textsize.dart';

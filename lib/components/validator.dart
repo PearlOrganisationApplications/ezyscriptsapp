@@ -7,12 +7,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../constant/colors.dart';
 import '../repository/services/api_class.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/login/login_screen.dart';
 
 mixin FormValidationMixin {
+  Status _status = Status.loadig;
   String selectedUserType = '';
   String filePath = '';
   String? selectedOption;
@@ -99,6 +99,9 @@ mixin FormValidationMixin {
 
 // signup function for signup
   void userSignup(BuildContext context) async {
+
+      _status = Status.loadig; // Set status to loading when login starts
+
     final currentContext = context;
     try {
       // Ensure _filePath is not empty before making the request
@@ -131,6 +134,7 @@ mixin FormValidationMixin {
       var response = await request.send();
       // Check the response
       if (response.statusCode == 200) {
+        _status = Status.sucess;
         log('Signup successful');
         final responseString = await response.stream.bytesToString();
         var jsonResponse = json.decode(responseString);
@@ -172,7 +176,7 @@ mixin FormValidationMixin {
         var result = jsonDecode(response.body);
         var token=result['token'];
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', token);
+        prefs.setString('token',token);
         CustomToast.showToast( result['message']);
         await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return WillPopScope(

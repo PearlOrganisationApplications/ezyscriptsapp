@@ -7,17 +7,13 @@ import 'package:ezyscripts/components/percentindicator.dart';
 import 'package:ezyscripts/components/toast.dart';
 import 'package:ezyscripts/main.dart';
 import 'package:ezyscripts/screens/cart/cart_screen.dart';
-import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../components/textformfield.dart';
 import '../../../constant/app_string.dart';
 import 'package:http/http.dart'as http;
 
 import '../../../constant/colors.dart';
-import '../../../controller/totalprice controller.dart';
 import '../../../repository/services/api_class.dart';
 
 class Step3 extends StatefulWidget {

@@ -10,6 +10,7 @@ class ApiService {
       "3|IMW1IylGRQNACz51FP8RXGloBrpm3NRPEvXwdFu8ac039a3e";
 
   static Future<UserDetails> getProfileDetails() async {
+    print('WWWWW$token');
     try {
       final response = await http.get(
         Uri.parse('$apiUrl/patient/get-user'),

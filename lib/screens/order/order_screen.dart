@@ -1,11 +1,9 @@
 import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/components/textformfield.dart';
 import 'package:ezyscripts/constant/colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../controller/totalprice controller.dart';
 import '../../main.dart';
@@ -19,8 +17,6 @@ class OrderDetails extends StatefulWidget {
 
 class _OrderDetailsState extends State<OrderDetails> {
   final coupon=TextEditingController();
-
-  final RequestController priceController = Get.put(RequestController());
   final cvc=TextEditingController();
   final expiryDate=TextEditingController();
   final cardCode=TextEditingController();
@@ -50,6 +46,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
   Widget orederDetails(){
+    final request=Provider.of<RequestController>(context);
     return Container(
       alignment: Alignment.center,
       width: screenSize.width * 0.9,
@@ -122,7 +119,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   children: [
                     Text('OrderTotal',style:TextStyle(color: AppColors.primary,fontSize: 20,fontWeight: FontWeight.w500),),
                     Obx(() => Text(
-                      '\$${priceController.total.value}',
+                      '\$${request.totalPrice}',
                       style: TextStyle(fontSize: 20),
                     )),
                   ],
