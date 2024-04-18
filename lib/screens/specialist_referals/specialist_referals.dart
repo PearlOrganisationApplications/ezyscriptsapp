@@ -15,7 +15,9 @@ class ReferedSpecialist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
+      ),
       body: ListView(
         children: [
           Padding(

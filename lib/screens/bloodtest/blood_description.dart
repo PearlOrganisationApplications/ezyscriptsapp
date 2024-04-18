@@ -6,6 +6,7 @@ import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
 
@@ -14,7 +15,9 @@ import '../../../repository/services/api_class.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../controller/totalprice controller.dart';
 import '../cart/cart_screen.dart';
+import '../home/home_screen.dart';
 
 class BloodTestDescription extends StatefulWidget {
   late final String text;
@@ -54,7 +57,7 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        iconTheme: IconThemeData(color: AppColors.primary),
         title: Text(
           widget.text,
           style:
@@ -123,7 +126,6 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: SizedBox(
-        width: screenSize.width * .9,
         child: Card(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -453,10 +455,11 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
                 color: Colors.black, fontWeight: FontWeight.w500, fontSize: 20),
           ),
           Container(
-            height: screenSize.height * .5,
             child: Padding(
               padding: const EdgeInsets.only(left: 18.0, right: 18),
               child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: pathologyConditions.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -800,6 +803,8 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Container(
             height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -860,6 +865,8 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Container(
             height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -920,6 +927,8 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Container(
             height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -980,6 +989,8 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Container(
             height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -1040,6 +1051,8 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Container(
             height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -1100,6 +1113,8 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Container(
             height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -1160,6 +1175,8 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Container(
             height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -1218,8 +1235,9 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
           Text('DIGITAL MEDICAL CONSULTATION',style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500),),
           SizedBox(height: 13,),
           Container(
-            height: screenSize.height * .45,
             child: ListView.separated(
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Column(
@@ -1285,8 +1303,9 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
             formattedDate; // Set the formatted date to the controller
       });
   }
-
   Future<void> bloodConsulation() async {
+    var quantity = Provider.of<NumberProducts>(context, listen: false);
+
     print(widget.text != "Multiple-Day Certificate"
         ? widget.text.split(' ').last
         : "Multiple-Day");
@@ -1329,6 +1348,7 @@ class _BloodTestDescriptionState extends State<BloodTestDescription> {
         final result = jsonDecode(response.body);
         print(result);
         getCartDetils();
+        quantity.increment();
         CustomToast.showToast(result['message']);
         Navigator.push(
             context,

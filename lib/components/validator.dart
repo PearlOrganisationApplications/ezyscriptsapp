@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ezyscripts/components/toast.dart';
+import 'package:ezyscripts/constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart'as http;
@@ -177,7 +179,11 @@ mixin FormValidationMixin {
         var token=result['token'];
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token',token);
+        getToken();
         CustomToast.showToast( result['message']);
+        Timer(Duration(seconds: 1), (){
+          getCartDetils();
+        });
         await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
           return WillPopScope(
             onWillPop: () async {

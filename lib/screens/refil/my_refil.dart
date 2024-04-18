@@ -64,8 +64,6 @@ class _RefilState extends State<Refil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       body:  Padding(
         padding: const EdgeInsets.only(top: 48.0,left: 10),
         child: Column(
@@ -125,7 +123,9 @@ class _RefilState extends State<Refil> {
   Widget previousNext(){
     return Row(
       children: [
-        CustomButton(text: 'Previous', onPressed: (){},width: screenSize.width*0.34,),
+        CustomButton(text: 'Previous', onPressed: (){
+          Navigator.pop(context);
+        },width: screenSize.width*0.34,),
         SizedBox(width: 15,),
         CustomButton(text: 'Next', onPressed: (){
           _selectedOption==null?CustomToast.showToast('Please select the post'):Navigator.push(context, MaterialPageRoute(builder: (context) => Step3(productName:_selectedOption.toString() ),));

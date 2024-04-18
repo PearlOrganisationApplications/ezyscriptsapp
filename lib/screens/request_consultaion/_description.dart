@@ -6,6 +6,7 @@ import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
 
@@ -14,7 +15,9 @@ import '../../../repository/services/api_class.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../controller/totalprice controller.dart';
 import '../cart/cart_screen.dart';
+import '../home/home_screen.dart';
 
 class RequestConsulationDescription extends StatefulWidget {
   late final String text;
@@ -54,6 +57,7 @@ class _RequestConsulationDescriptionState extends State<RequestConsulationDescri
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
         title: Text(
           widget.text,
           style:
@@ -573,6 +577,7 @@ class _RequestConsulationDescriptionState extends State<RequestConsulationDescri
   }
 
   Future<void> requestConsulation() async {
+    var quantity = Provider.of<NumberProducts>(context, listen: false);
     print(widget.text != "Multiple-Day Certificate"
         ? widget.text.split(' ').last
         : "Multiple-Day");
@@ -614,6 +619,7 @@ class _RequestConsulationDescriptionState extends State<RequestConsulationDescri
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         print(result);
+        quantity.increment();
         getCartDetils();
         CustomToast.showToast(result['message']);
         Navigator.push(

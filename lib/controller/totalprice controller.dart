@@ -1,4 +1,5 @@
 import 'package:ezyscripts/constant/colors.dart';
+import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,3 +68,29 @@ Future<int?> getTotalProducts() async {
 }
 
 int totalProductQuantity=0;
+
+class  NumberProducts extends ChangeNotifier{
+  void increment()async{
+
+    totalProducts++;
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setInt('product', totalProducts);
+    notifyListeners();
+  }
+  void decrementProduct()async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setInt('product', totalProducts);
+    if(totalProducts>0){
+      totalProducts--;
+      notifyListeners();
+    }
+
+  }
+
+  }
+  Future<int>getTotalProduct()async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    totalProducts=pref.getInt('product')!;
+    print('TOTALPRODUCT${totalProducts}');
+  return totalProducts;
+  }

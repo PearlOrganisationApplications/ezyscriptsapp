@@ -15,7 +15,9 @@ class BloodTestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('BLOOD TEST'),),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
+        title: Text('BLOOD TEST',style: TextStyle(color: AppColors.primary),),),
       body:ListView(
         children: [
           Padding(

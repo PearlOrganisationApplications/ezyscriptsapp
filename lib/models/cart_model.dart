@@ -2,6 +2,8 @@
 class MyResponse {
   bool status;
   var subTotal;
+  var total_products;
+
   List<CartDetails> scriptDetails;
   List<CertificateDetail> certificateDetails;
   List<ConsultationDetail> consultationDetail;
@@ -15,14 +17,16 @@ class MyResponse {
     required this.certificateDetails,
     required this.consultationDetail,
     required this.referalsDetails,
-    required this.bloodTestDetail
+    required this.bloodTestDetail, required total_products
   });
 
   factory MyResponse.fromJson(Map<String, dynamic> json) {
     return MyResponse(
       status: json['status'],
       subTotal: json['subTotal']??0,
-      scriptDetails: List<CartDetails>.from(json['script_details'].map((x) => CartDetails.fromJson(x))),
+        total_products:json['total_products']??0,
+
+        scriptDetails: List<CartDetails>.from(json['script_details'].map((x) => CartDetails.fromJson(x))),
       certificateDetails: List<CertificateDetail>.from(json['certificate_details'].map((x) => CertificateDetail.fromJson(x))),
       consultationDetail: List<ConsultationDetail>.from(json['consultation_details'].map((x) => ConsultationDetail.fromJson(x))),
       referalsDetails: List<ReferralDetail>.from(json['referral_details'].map((x) => ReferralDetail.fromJson(x))),

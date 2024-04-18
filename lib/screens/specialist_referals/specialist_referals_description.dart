@@ -6,6 +6,7 @@ import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
 
@@ -14,7 +15,9 @@ import '../../../repository/services/api_class.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../controller/totalprice controller.dart';
 import '../cart/cart_screen.dart';
+import '../home/home_screen.dart';
 
 class SpecialistReferalsDescription extends StatefulWidget {
   late final String text;
@@ -54,6 +57,7 @@ class _SpecialistReferalsDescriptionState extends State<SpecialistReferalsDescri
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
         title: Text(
           widget.text,
           style:
@@ -834,6 +838,7 @@ class _SpecialistReferalsDescriptionState extends State<SpecialistReferalsDescri
   }
 
   Future<void> specilistReferals() async {
+    var quantity = Provider.of<NumberProducts>(context, listen: false);
     print(widget.text != "Multiple-Day Certificate"
         ? widget.text.split(' ').last
         : "Multiple-Day");
@@ -875,6 +880,7 @@ class _SpecialistReferalsDescriptionState extends State<SpecialistReferalsDescri
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         print(result);
+        quantity.increment();
         getCartDetils();
         CustomToast.showToast(result['message']);
         Navigator.push(

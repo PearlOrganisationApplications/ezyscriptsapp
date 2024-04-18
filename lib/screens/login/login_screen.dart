@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../components/textsize.dart';
 import '../../components/validator.dart';
 import '../../constant/colors.dart';
-
+bool isLoaded=true;
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -15,7 +15,7 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
   @override
   void initState() {
     super.initState();
-
+    Token.clearToken();
     // Listen for changes in the text field
     email1.addListener(() {
       setState(() {
@@ -27,20 +27,6 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back,color: Colors.white,),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        elevation: 5,
-        title: const Text(
-          'Login Here',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Form(
           key: formey,
@@ -62,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
                         color: Colors.white,
                         image: const DecorationImage(
                           image: AssetImage(
-                              'assets/images/EzyScript1-155x108.png'), // Replace 'name' with your actual image path
+                              'assets/images/logo.png'), // Replace 'name' with your actual image path
                         ),
                       ),
                       height: 90,
@@ -71,58 +57,58 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
                 ],
               ),
               const SizedBox(height: 10,),
-                Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isDoctorSelected = true;
-                  isPatientSelected = false;
-                });
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: 150,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: isDoctorSelected ? Colors.green : Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  'Doctor',
-                  style: TextStyle(
-                    color: isDoctorSelected ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 20),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isDoctorSelected = false;
-                  isPatientSelected = true;
-                });
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: 150,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: isPatientSelected ? Colors.green : Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  'Patient',
-                  style: TextStyle(
-                    color: isPatientSelected ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-            ),
-          ],
-                ),
+          //       Row(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // children: [
+          //   GestureDetector(
+          //     onTap: () {
+          //       setState(() {
+          //         isDoctorSelected = true;
+          //         isPatientSelected = false;
+          //       });
+          //     },
+          //     child: Container(
+          //       alignment: Alignment.center,
+          //       width: 150,
+          //       height: 50,
+          //       decoration: BoxDecoration(
+          //         color: isDoctorSelected ? Colors.green : Colors.white,
+          //         borderRadius: BorderRadius.circular(5),
+          //       ),
+          //       child: Text(
+          //         'Doctor',
+          //         style: TextStyle(
+          //           color: isDoctorSelected ? Colors.white : Colors.black,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          //   const SizedBox(width: 20),
+          //   GestureDetector(
+          //     onTap: () {
+          //       setState(() {
+          //         isDoctorSelected = false;
+          //         isPatientSelected = true;
+          //       });
+          //     },
+          //     child: Container(
+          //       alignment: Alignment.center,
+          //       width: 150,
+          //       height: 50,
+          //       decoration: BoxDecoration(
+          //         color: isPatientSelected ? Colors.green : Colors.white,
+          //         borderRadius: BorderRadius.circular(5),
+          //       ),
+          //       child: Text(
+          //         'Patient',
+          //         style: TextStyle(
+          //           color: isPatientSelected ? Colors.white : Colors.black,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ],
+          //       ),
 
               Padding(
                 padding: const EdgeInsets.only(left: 18.0,right: 18),
@@ -172,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
                   const Text('Remember Me'),
                 ],
               ),
-              SizedBox(
+              isLoaded?SizedBox(
                 width: MediaQuery.of(context).size.width*0.97,
                   child:enable? ElevatedButton(
                       style: ButtonStyle(
@@ -180,12 +166,15 @@ class _LoginScreenState extends State<LoginScreen>with FormValidationMixin{
                       ),
                       onPressed: ()async{
                         if(formey.currentState!.validate()){
+                          setState(() {
+                            isLoaded=false;
+                          });
                           userLogin(context);
                         }
                       }, child:  Text('Login',style:AppStyles.subtitleStyle().copyWith(color: Colors.white)
                   )
                   ):Container()
-              )
+              ):CircularProgressIndicator()
             ],
           ),
         ),

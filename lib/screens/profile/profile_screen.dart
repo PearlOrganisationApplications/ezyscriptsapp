@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:ezyscripts/screens/profile/profile_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -112,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fit: BoxFit.cover,
                                     width: 102,
                                     height: 102,
-                                  ):CircularProgressIndicator(),
+                                  ):Container(),
                                 ),
                               ),
                               Positioned(
@@ -379,22 +380,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.grey.shade400,
                           thickness: 2,
                         ),
-                        Center(
-                          child: Container(
-                            height: 50,
-                            width: 300,
-                            decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Center(
-                              child: Text(
-                                'Deactivate Account',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Center(
+                        //   child: Container(
+                        //     height: 50,
+                        //     width: 300,
+                        //     decoration: BoxDecoration(
+                        //         color: AppColors.primary,
+                        //         borderRadius: BorderRadius.circular(10)),
+                        //     child: const Center(
+                        //       child: Text(
+                        //         'Deactivate Account',
+                        //         style: TextStyle(
+                        //             fontSize: 16, color: Colors.white),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -424,9 +425,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: <Widget>[
                 TextField(
+
                   controller: dobController,
                   decoration: const InputDecoration(
                     labelText: 'Date of Birth',
+                    hintText: "yyyy-mm-dd"
                   ),
                 ),
                 TextField(
@@ -480,7 +483,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return SafeArea(
           child: Container(
             padding: const EdgeInsets.only(top: 15),
-            height: MediaQuery.of(context).size.height * 0.18,
+            height: MediaQuery.of(context).size.height * 0.22,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -514,7 +517,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ) async {
     String apiUrl =
         'https://test.pearl-developer.com/eazyscript/public/api/patient/update-user';
-    String token = '3|IMW1IylGRQNACz51FP8RXGloBrpm3NRPEvXwdFu8ac039a3e';
+
 
     // Create a map to hold non-empty data
     Map<String, String> data = {};
@@ -543,11 +546,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: jsonData,
       );
 
+      print('Edit profile body. Error: ${response.body}');
       if (response.statusCode == 200) {
         print('Details uploaded successfully');
+        //_userDetails = ApiService.getProfileDetails(context);
         //Navigator.of(context).pop();
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => ProfileScreen()));
+            MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
         print('Failed to upload details. Error: ${response.statusCode}');
         if (response.body.isNotEmpty) {

@@ -15,7 +15,9 @@ class MedicalCertificate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(heading,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w500),),),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
+        title: Text(heading,style: TextStyle(color: AppColors.primary,fontWeight: FontWeight.w500),),),
 
       body: SingleChildScrollView(
         child: Column(children: [

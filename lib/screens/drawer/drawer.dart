@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:ezyscripts/screens/home/home_screen.dart';
+import 'package:ezyscripts/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constant/colors.dart';
@@ -20,7 +22,7 @@ class CDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.primary,
             ),
-            child: Image.asset("assets/images/EzyScript1-155x108.png"),
+            child: Image.asset("assets/images/logo.png"),
           ),
            ListTile(
             onTap: (){
@@ -88,11 +90,14 @@ class CDrawer extends StatelessWidget {
               ),
             ],
           ),
-          const ExpansionTile(
+           ExpansionTile(
             title: Text('About us'),
             trailing: Icon(Icons.arrow_drop_down_sharp),
             children: [
               ListTile(
+                onTap: (){
+                  _launchURL('https://scriptwarehouse.com.au/about-us/');
+                },
                 title: Text(
                   'Our Story',
                   style: TextStyle(color: AppColors.primary),
@@ -103,6 +108,9 @@ class CDrawer extends StatelessWidget {
                         ' healthcare more accessible and convenient, improving the lives of millions'),
               ),
               ListTile(
+                onTap: (){
+                  _launchURL('https://scriptwarehouse.com.au/about-us/');
+                },
                 title: Text(
                   'Our Team',
                   style: TextStyle(color: AppColors.primary),
@@ -113,6 +121,9 @@ class CDrawer extends StatelessWidget {
                         ' committed to delivering top-quality healthcare services.'),
               ),
               ListTile(
+          onTap: (){
+        _launchURL('https://scriptwarehouse.com.au/patient-safety/');
+          },
                 title: Text(
                   'Patients safety',
                   style: TextStyle(color: AppColors.primary),
@@ -123,6 +134,9 @@ class CDrawer extends StatelessWidget {
                         'embracing innovation at every step.'),
               ),
               ListTile(
+                onTap: (){
+                  _launchURL('https://scriptwarehouse.com.au/privacy-policy/');
+                },
                 title: Text(
                   'Privacy Policy',
                   style: TextStyle(color: AppColors.primary),
@@ -156,9 +170,9 @@ class CDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(48.0),
             child: InkWell(
               onTap: () async {
-             Token.clearToken();
-             exit(0);
-              },
+            Token.clearToken();
+            Navigator.push(context,MaterialPageRoute(builder: (context) => LoginScreen(),))
+;              },
               child: Container(
                   alignment: Alignment.center,
                   width: 20,

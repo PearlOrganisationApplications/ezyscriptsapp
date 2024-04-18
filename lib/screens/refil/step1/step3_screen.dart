@@ -7,13 +7,16 @@ import 'package:ezyscripts/components/percentindicator.dart';
 import 'package:ezyscripts/components/toast.dart';
 import 'package:ezyscripts/main.dart';
 import 'package:ezyscripts/screens/cart/cart_screen.dart';
+import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/textformfield.dart';
 import '../../../constant/app_string.dart';
 import 'package:http/http.dart'as http;
 
 import '../../../constant/colors.dart';
+import '../../../controller/totalprice controller.dart';
 import '../../../repository/services/api_class.dart';
 
 class Step3 extends StatefulWidget {
@@ -62,7 +65,9 @@ class _Step3State extends State<Step3> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  CustomButton(text: 'Previous', onPressed: (){},width: screenSize.width*0.34,),
+                  CustomButton(text: 'Previous', onPressed: (){
+                    Navigator.pop(context);
+                  },width: screenSize.width*0.34,),
                   CustomButton(text: 'Add To Cart', onPressed: (){
                     print(isChronoicConditions);
                     requestScript();
@@ -302,6 +307,7 @@ class _Step3State extends State<Step3> {
     );
   }
   Future<void> requestScript() async {
+    var quantity = Provider.of<NumberProducts>(context, listen: false);
     try {
       final response = await http.post(
         Uri.parse(Api.requestScript),
@@ -332,7 +338,9 @@ class _Step3State extends State<Step3> {
       if (response.statusCode == 200) {
         var result=jsonDecode(response.body);
         CustomToast.showToast(result['message']);
+        quantity.increment();
         getCartDetils();
+
         await Future.delayed(Duration(seconds: 3));
          // priceController.addPrices();
          Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));

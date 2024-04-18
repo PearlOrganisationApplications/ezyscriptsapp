@@ -8,15 +8,15 @@ import 'package:ezyscripts/screens/specialist_referals/specialist_referals.dart'
 import 'package:flutter/material.dart';
 
 import '../../constant/colors.dart';
-import '../../database/data_helper.dart';
 import '../about_us/about_us.dart';
+import '../cart/empty_cart_screen.dart';
 import '../contact_us/contact_us.dart';
 import '../drawer/drawer.dart';
 import '../medical_certificate/my_document.dart';
 import '../profile/profile_api.dart';
 import '../profile/profile_screen.dart';
 import '../request_consultaion/request_consultaion.dart';
-
+int totalProducts=0;
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -27,7 +27,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<UserDetails> _userDetails;
   late Image image;
-  final dbHelper = DBHelper.instance;
   final totalprice=TotalPriceCalculate();
 
   @override
@@ -37,19 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _userDetails = ApiService.getProfileDetails(context);
     totalprice.updateTotalPrice();
   }
-  void _insert() async {
-    Map<String, dynamic> row = {
-      'name': 'John Doe',
-      'age': 30,
-    };
-    int id = await dbHelper.insert(row);
-    print('Inserted row id: $id');
-  }
 
-  void _query() async {
-    List<Map<String, dynamic>> result = await dbHelper.queryAll();
-    print('Query result: $result');
-  }
 
 
   @override
@@ -69,12 +56,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Stack(
               children: [
                 IconButton(
-                  onPressed: () async{
+                  onPressed: () {
                     getCartDetils();
-
-                      await Future.delayed(Duration(microseconds: 2));
-                    myResponse!.status?
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen())):CustomToast.showToast('Your Cart is Empty');
+                      navigateToCart?Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen())):
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>EmptyCart()));
                   },
                   icon: const Icon(
                     Icons.shopping_cart_rounded,
@@ -93,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child:  Center(
                         child: Text(
-                         lengthProduct.toString(),
+                          totalProducts.toString(),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -113,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 print(snapshot.error);
-                return Center(child: Text('No Internet'));
+                return Center(child: Text('Please reload the application'));
               } else {
                 final userDetails = snapshot.data!;
                 return Column(
@@ -159,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     SizedBox(height: 6),
                                     Text(
-                                      'Welcome to Ezyscript',
+                                      'Welcome to Scriptwarehouse',
                                       style: TextStyle(
                                         color: Colors.black,
                                       ),
@@ -170,36 +155,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: userDetails.profilePic != null
+                                  child: userDetails.profilePic.isNotEmpty
                                       ? CircleAvatar(
                                           radius: 40,
                                           backgroundImage: NetworkImage(
                                               userDetails.profilePic),
                                         )
-                                      : Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
+                                      : Container()
                                 ),
                               ],
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'App Version: ',
-                                  style: TextStyle(
-                                      color: AppColors.text, fontSize: 16),
-                                ),
-                                Text(
-                                  '6.4.0',
-                                  style: TextStyle(
-                                      color: AppColors.text, fontSize: 16),
-                                )
-                              ],
-                            )
+
                           ],
                         ),
                       ),

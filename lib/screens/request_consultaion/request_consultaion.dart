@@ -16,6 +16,7 @@ class RequestConsultaion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
         title: Text('TELEHEALTH CONSULTATIONS',style: TextStyle(color: AppColors.primary,fontSize: 20,fontWeight: FontWeight.w700),),
       ),
       body: Padding(

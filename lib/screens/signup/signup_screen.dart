@@ -40,13 +40,8 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
     }
   }
 
-  Future<void> _launchUrl() async {
-    if (!await canLaunch('https://ezyscripts.com.au/')) {
-      throw Exception('Could not launch ');
-    } else {
-      await launch('https://ezyscripts.com.au/');
-    }
-  }
+
+
   String getFileName(String path) {
     return basename(path);
   }
@@ -55,8 +50,9 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
         title: const Text(
-          'EzyScripts',
+          'SCRIPTAWREHOUSE',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppColors.primary,
@@ -100,7 +96,7 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                           setState(() {
                             selectedUserType = value as String;
                           });
-                          _launchUrl();
+                          launchUrll();
                         },
                       ),
                       Text('Doctor'),
@@ -123,6 +119,7 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                                 : null,
                             labelText: "Enter First Name",
                             controller: fName),
+                        SizedBox(height: 10,),
                         CustomTextFormField(
                             validator: (value) => value?.isEmpty ?? true
                                 ? "Last Name is required"
@@ -343,7 +340,7 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
                   const Text('Already have Account'),
                   TextButton(
                       onPressed: () {
-                        const LoginScreen();
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                       },
                       child: const Text("Login"))
                 ],
@@ -363,5 +360,12 @@ class _SignupState extends State<Signup>  with FormValidationMixin{
       age--;
     }
     return age;
+  }
+}
+Future<void> launchUrll() async {
+  if (!await canLaunch('https://scriptwarehouse.com.au/')) {
+    throw Exception('Could not launch ');
+  } else {
+    await launch('https://scriptwarehouse.com.au/');
   }
 }

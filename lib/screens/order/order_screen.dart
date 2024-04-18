@@ -296,9 +296,8 @@ class _OrderDetailsState extends State<OrderDetails> {
   displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
-        createPaymentIntent(totalPrice, 'usd');
-        await Future.delayed(Duration(seconds: 2));
         confirmPaymentIntent(payment_id);
+        await Future.delayed(Duration(seconds: 2));
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -309,7 +308,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 TextButton(
                   onPressed: () {
                     // Close the dialog
-                    Navigator.of(context).pop();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+                    // Navigator.of(context).pop();
                   },
                   child: Text("OK"),
                 ),
@@ -334,12 +334,12 @@ class _OrderDetailsState extends State<OrderDetails> {
         'payment_method_types[]': 'card',
         // 'metadata': jsonEncode({
         //   'order_id': orderID,
-        //   // 'name': firstName.text,
-        //   // 'city': street.text,
-        //   // 'state': state.text,
-        //   // 'country': countrty.text,
-        //   // 'email': email.text,
-        //   // 'phone_number': contact.text,
+        //    'name': firstName.text,
+        //    'city': street.text,
+        //    'state': state.text,
+        //    'country': countrty.text,
+        //    'email': email.text,
+        //    'phone_number': contact.text,
         // })
 
       };

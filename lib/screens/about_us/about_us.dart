@@ -1,5 +1,6 @@
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class AboutUs extends StatelessWidget {
       child:Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.primary,
-          title: const Text('About US', style: TextStyle(
+          title: const Text('About Us', style: TextStyle(
             fontSize: 20,
             color: Colors.white,
           ),),
@@ -20,46 +21,14 @@ class AboutUs extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-          child: Column(
-            children: [
-             const  Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('MISSION AND ', style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500
-                  ),),
-                  Text('VALUES', style: TextStyle(
-                      color: AppColors.accent,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500
-                  ),),
-
-                ],
-              ),
-
-
-              const SizedBox(height: 10,),
-              Text(AppString.missionText,
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 14,
-                  //fontWeight: FontWeight.w500
-                ),),
-              const SizedBox(height: 30,),
-
-              const SizedBox(height: 6,),
-              Text(AppString.visionText,
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 14,
-                  //fontWeight: FontWeight.w500
-                ),),
-
-            ],
+          child: Center(
+            child: Text('This content will be soon ...',
+              textAlign: TextAlign.justify,
+              style: TextStyle(
+                color: Colors.grey.shade500,
+                fontSize: 14,
+                //fontWeight: FontWeight.w500
+              ),),
           ),
         ),
       ),

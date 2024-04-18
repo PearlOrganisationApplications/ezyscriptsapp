@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:ezyscripts/screens/login/login_screen.dart';
+import 'package:ezyscripts/screens/profile/profile_api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,40 +8,7 @@ import '../constant/colors.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/splash/splash_screen.dart';
 
-/*class NetworkController extends GetxController {
-  final Connectivity _connectivity = Connectivity();
-
-  @override
-  void onInit() {
-    super.onInit();
-    _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-  }
-
-  void _updateConnectionStatus(ConnectivityResult connectivityResult) {
-
-    if (connectivityResult == ConnectivityResult.none) {
-      Get.rawSnackbar(
-          messageText: const Text(
-              'PLEASE CONNECT TO THE INTERNET',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14
-              )
-          ),
-          isDismissible: false,
-          duration: const Duration(days: 1),
-          backgroundColor: Colors.red[400]!,
-          icon : const Icon(Icons.wifi_off, color: Colors.white, size: 35,),
-          margin: EdgeInsets.zero,
-          snackStyle: SnackStyle.GROUNDED
-      );
-    } else {
-      if (Get.isSnackbarOpen) {
-        Get.closeCurrentSnackbar();
-      }
-    }
-  }
-}*/
+var screens;
 
 
 class NetworkController extends GetxController{
@@ -84,7 +52,7 @@ class NoInternetScreen  extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,),
           //child: Text(" No internet connect found ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w200,),))
-        )
+        ),
       ),
     );
   }

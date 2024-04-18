@@ -6,6 +6,7 @@ import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/controller/totalprice%20controller.dart';
 import 'package:ezyscripts/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 
 
@@ -21,11 +22,12 @@ void main() async{
    Stripe.publishableKey='pk_test_51O504PABp6SRG1tAcGFKIMPgtAMXEjD7VgeYlO0uAo5J39HIgi2l8OytyIblElqr7Be0ZKIgtWvvx9yoG03HZYEW00nQnSnLQe';
      // await dotenv.load(fileName: 'assets/.env');
   DependencyInjection.init();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown,]);
   runApp(const MyApp());
 }
 
 late Size screenSize;
-
+bool authorization=true;
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -42,6 +44,7 @@ class _MyAppState extends State<MyApp> {
     screenSize = MediaQuery.of(context).size;
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context)=>NumberProducts()),
         ChangeNotifierProvider(create: (context) => RequestController()),
         ChangeNotifierProvider(create: (context) => TotalPriceCalculate()),
         // Add more providers as needed

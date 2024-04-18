@@ -9,7 +9,7 @@ class CustomToast {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.grey,
       textColor: Colors.white,
       fontSize: 16.0,
     );

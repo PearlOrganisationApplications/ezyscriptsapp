@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:ezyscripts/components/toast.dart';
 import 'package:ezyscripts/constant/colors.dart';
+import 'package:ezyscripts/screens/login/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +27,7 @@ class ApiService {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
                 },
                 child: Text('OK'),
               ),
@@ -61,6 +63,8 @@ class ApiService {
           about: userDetails['about'] ?? '',
         );
       } else {
+        CustomToast.showToast('Your Session is Expired Login again');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
         print(
             'API Error - Status Code: ${response.statusCode}, Body: ${response.body}');
         throw Exception('Failed to load profile details');

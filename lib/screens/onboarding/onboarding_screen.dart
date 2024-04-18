@@ -1,7 +1,9 @@
 import 'package:ezyscripts/constant/colors.dart';
+import 'package:ezyscripts/main.dart';
 import 'package:ezyscripts/screens/login/login_screen.dart';
 import 'package:ezyscripts/screens/signup/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class OnBoardScreen extends StatelessWidget {
   const OnBoardScreen({super.key});
@@ -23,13 +25,15 @@ class OnBoardScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 60,),
-                Image.asset('assets/images/EzyScript1-155x108.png'),
+                SizedBox(
+                  width: screenSize.width*.85,
+                    child: Image.asset('assets/images/logo.png')),
                 const SizedBox(
                   height: 50,
                 ),
                 const Text(
-                  'EzyScripts',
-                  style: TextStyle(color: AppColors.primary, fontSize: 40),
+                  'SCRIPTWAREHOUSE',
+                  style: TextStyle(color: AppColors.primary, fontSize: 30),
                 ),
                 const Text(
                   'Connecting patients, doctors, and pharmacies on one platform. It provides comprehensive prescription management for better patient care.',

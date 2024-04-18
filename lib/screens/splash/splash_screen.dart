@@ -15,10 +15,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     getToken();
-    getTotalProducts();
+    getTotalProduct();
     super.initState();
-    // getCartDetils();
-    Future.delayed(Duration(seconds: 20), () {
+    getCartDetils();
+    Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) =>  token==null?OnBoardScreen():HomeScreen(),
@@ -51,7 +51,6 @@ class _SplashScreenState extends State<SplashScreen> {
                   width: 150,
                   height: 150,
                 ),
-                
               ],
             ),
           ),

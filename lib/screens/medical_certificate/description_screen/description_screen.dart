@@ -4,10 +4,13 @@ import 'package:ezyscripts/components/custombutton.dart';
 import 'package:ezyscripts/constant/app_string.dart';
 import 'package:ezyscripts/constant/colors.dart';
 import 'package:ezyscripts/main.dart';
+import 'package:ezyscripts/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../components/textformfield.dart';
 import '../../../components/toast.dart';
+import '../../../controller/totalprice controller.dart';
 import '../../../repository/services/api_class.dart';
 import '../../cart/cart_screen.dart';
 
@@ -47,7 +50,10 @@ class _MedicalDescriptionState extends State<MedicalDescription> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
+
         title: Text(
+
           widget.text,
           style:
               TextStyle(color: AppColors.primary, fontWeight: FontWeight.w400),
@@ -601,6 +607,7 @@ class _MedicalDescriptionState extends State<MedicalDescription> {
   }
 
   Future<void> medicalCertificate() async {
+    var quantity = Provider.of<NumberProducts>(context, listen: false);
     print(widget.text != "Multiple-Day Certificate"
         ? widget.text.split(' ').last
         : "Multiple-Day");
@@ -643,6 +650,7 @@ class _MedicalDescriptionState extends State<MedicalDescription> {
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
         print(result);
+        quantity.increment();
         getCartDetils();
         CustomToast.showToast(result['message']);
         Navigator.push(

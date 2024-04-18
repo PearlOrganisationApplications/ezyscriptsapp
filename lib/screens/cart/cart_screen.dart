@@ -5,8 +5,11 @@ import 'package:ezyscripts/main.dart';
 import 'package:ezyscripts/screens/order/order_screen.dart';
 import 'package:ezyscripts/screens/verify_details/verify_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controller/totalprice controller.dart';
+import '../../repository/services/api_class.dart';
 double totalPrice=myResponse!.subTotal+30.0;
 class CartScreen extends StatefulWidget {
   @override
@@ -25,11 +28,11 @@ class _CartScreenState extends State<CartScreen> {
   List<int> _quantities = List.filled(myResponse!.scriptDetails.length, 1);
   var subtotal=myResponse!.subTotal;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: AppColors.primary),
         title: Text(
           cart,
           style: TextStyle(
@@ -95,7 +98,7 @@ class _CartScreenState extends State<CartScreen> {
                 myResponse!.referalsDetails.isNotEmpty
                     ? specialistReferals()
                     : Container(),
-                myResponse!.referalsDetails.isNotEmpty
+                myResponse!.bloodTestDetail.isNotEmpty
                     ? bloodTestData()
                     : Container(),
                 // bloodTest(),
@@ -109,6 +112,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget scriptsDetails() {
+    var quantity = Provider.of<NumberProducts>(context, listen: false);
     return Container(
       child: ListView.builder(
         shrinkWrap: true,
@@ -122,25 +126,31 @@ class _CartScreenState extends State<CartScreen> {
               child: CircularProgressIndicator(),
             ); // Return a placeholder text if _cardDetails is null
           }
-          void incrementQuantity(int index) {
+          void incrementQuantity(int index)async{
+            SharedPreferences prefs = await SharedPreferences.getInstance();
             setState(() {
               _quantities[index]++;
+              // quantity.increment();
               lengthProduct++;
               double price = double.parse(getCart[index].productPrice.substring(1));
               totalPrice +=  price;
               subtotal+=price;
+              prefs.setInt('quantity_$index', _quantities[index]);
               // Increase quantity by 1 for the specified index
             });
           }
-          void decrement(int index) {
+          void decrement(int index) async{
+            SharedPreferences prefs = await SharedPreferences.getInstance();
             setState(() {
               if (_quantities[index] > 1) {
                 _quantities[index]--;
+                // quantity.decrementProduct();
                 lengthProduct--;
                 // Calculate price based on quantity change
                 double price = double.parse(getCart[index].productPrice.substring(1));
                 totalPrice -= price;
                 subtotal-=price;
+                prefs.setInt('quantity_$index', _quantities[index]);
                 // Decrease quantity by 1 for the specified index
               }
             });
@@ -161,18 +171,20 @@ class _CartScreenState extends State<CartScreen> {
                   Divider(
                     color: AppColors.primary,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  IconButton(onPressed: (){
+
+                    print(myResponse!.scriptDetails[index].id);
+                     removeCart(myResponse!.scriptDetails[index].id,'script_details',context);
+                  }, icon: Icon(Icons.cancel)),
                   Row(
                     children: [
                       Text(
                         'Product:${getCart[index].medicareCardNo.toString()}',
                         style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w500),
+                            fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                       SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       Text(
                         '${getCart[index].productPrice}',
@@ -483,26 +495,26 @@ class _CartScreenState extends State<CartScreen> {
                   color: AppColors.primary,
                 ),
                 SizedBox(height: 10),
-                Text(
-                  'Price: ${certificateDetail.price}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    IconButton(onPressed: (){
+                      removeCart(myResponse!.certificateDetails[index].id,'certificate_details',context);
+                    }, icon: Icon(Icons.cancel)),
+                    SizedBox(width:10),
+                    Text(
+                      'Price: \$${certificateDetail.price}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 20),
                 Row(
                   children: [
                     Text(
                       'Product: ${certificateDetail.medicareCardNo.toString()}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      'Price: ${certificateDetail.price}',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -588,9 +600,17 @@ class _CartScreenState extends State<CartScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  '\$${getCart[index].price}',
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+                Row(
+                  children: [
+                    IconButton(onPressed: (){
+                      removeCart(myResponse!.consultationDetail[index].id,'consultation_details',context);
+                    }, icon: Icon(Icons.cancel)),
+                    SizedBox(width:10),
+                    Text(
+                      '\$${getCart[index].price}',
+                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 20,
@@ -693,9 +713,17 @@ class _CartScreenState extends State<CartScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    '${getCart[index].price}',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+                  Row(
+                    children: [
+                      IconButton(onPressed: (){
+                        removeCart(myResponse!.referalsDetails[index].id,'referral_details',context);
+                      }, icon: Icon(Icons.cancel)),
+                      SizedBox(width:10),
+                      Text(
+                        '${getCart[index].price}',
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 20,
@@ -772,14 +800,9 @@ class _CartScreenState extends State<CartScreen> {
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: 1,
+        itemCount: myResponse!.bloodTestDetail.length,
         itemBuilder: (context, index) {
-          var getCart = myResponse!.scriptDetails;
-          if (myResponse!.scriptDetails.isEmpty) {
-            return Center(
-              child: CircularProgressIndicator(),
-            ); // Return a placeholder text if _cardDetails is null
-          }
+          var getCart = myResponse!.bloodTestDetail;
           return Container(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -796,9 +819,10 @@ class _CartScreenState extends State<CartScreen> {
                   Divider(
                     color: AppColors.primary,
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  IconButton(onPressed: (){
+                    removeCart(myResponse!.bloodTestDetail[index].id,'bloodTest_details',context);
+                  }, icon: Icon(Icons.cancel)),
+                  SizedBox(width:10),
                   Text(
                     '${medicalCertificates[index].price}',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -817,7 +841,7 @@ class _CartScreenState extends State<CartScreen> {
                         width: 20,
                       ),
                       Text(
-                        '${getCart[index].productPrice}',
+                        '${getCart[index].price}',
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w500),
                       ),
